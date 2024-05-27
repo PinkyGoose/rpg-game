@@ -1,14 +1,11 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
-use bevy::ecs::bundle::DynamicBundle;
 use bevy::prelude::*;
-use bevy::utils::petgraph::visit::Walker;
-use bevy::window::WindowResized;
 
 fn main() {
     App::new()
-        .insert_resource(Movement_Y(MovementY::No))
-        .insert_resource(Movement_X(MovementX::No))
+        .insert_resource(MovementY(MovementYCoord::No))
+        .insert_resource(MovementX(MovementXCoord::No))
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_systems(Startup, (setup, setup_character))
         .add_systems(Update, sprite_movement)
@@ -46,44 +43,44 @@ fn animate_sprite(
 #[derive(Component)]
 enum Direction {
     Up,
-    Down,
+    _Down,
 }
 
 #[derive(Clone, Copy, Debug)]
 // #[derive(Resource)]
-enum MovementY {
+enum MovementYCoord {
     Up,
     Down,
     No,
 }
 
 #[derive(Clone, Copy)]
-enum MovementX {
+enum MovementXCoord {
     Left,
     Right,
     No,
 }
 
 #[derive(Resource)]
-struct Movement_X(MovementX);
+struct MovementX(MovementXCoord);
 
-impl Movement_X {
-    pub fn get(&self) -> MovementX {
+impl MovementX {
+    pub fn get(&self) -> MovementXCoord {
         self.0
     }
-    pub fn set(&mut self, m: MovementX) {
+    pub fn set(&mut self, m: MovementXCoord) {
         self.0 = m;
     }
 }
 
 #[derive(Resource)]
-struct Movement_Y(MovementY);
+struct MovementY(MovementYCoord);
 
-impl crate::Movement_Y {
-    pub fn get(&self) -> MovementY {
+impl crate::MovementY {
+    pub fn get(&self) -> MovementYCoord {
         self.0
     }
-    pub fn set(&mut self, m: MovementY) {
+    pub fn set(&mut self, m: MovementYCoord) {
         self.0 = m;
     }
 }
@@ -123,22 +120,22 @@ fn setup_character(mut commands: Commands, asset_server: Res<AssetServer>,
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>,
-         mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>) {
+         texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>) {
     commands.spawn(Camera2dBundle::default());
 
     setup_character(commands, asset_server, texture_atlas_layouts);
 }
 
-fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, &mut Transform)>, movement_x: Res<Movement_X>, movement_y: Res<Movement_Y>) {
-    for (mut logo, mut transform) in &mut sprite_position {
+fn sprite_movement(_time: Res<Time>, mut sprite_position: Query<(&mut Direction, &mut Transform)>, movement_x: Res<MovementX>, movement_y: Res<MovementY>) {
+    for (mut _logo, mut transform) in &mut sprite_position {
         match movement_y.get() {
-            MovementY::Up => transform.translation.y += 5.,
-            MovementY::Down => transform.translation.y -= 5.,// * time.delta_seconds(),
+            MovementYCoord::Up => transform.translation.y += 5.,
+            MovementYCoord::Down => transform.translation.y -= 5.,// * time.delta_seconds(),
             _ => {}
         }
         match movement_x.get() {
-            MovementX::Left => transform.translation.x -= 5.,// * time.delta_seconds(),
-            MovementX::Right => transform.translation.x += 5.,// * time.delta_seconds(),
+            MovementXCoord::Left => transform.translation.x -= 5.,// * time.delta_seconds(),
+            MovementXCoord::Right => transform.translation.x += 5.,// * time.delta_seconds(),
             _ => {}
         }
     }
@@ -158,15 +155,15 @@ fn get_window(window: Query<&Window>) {
     dbg!(width, height, x, y);
 }
 
-fn keyboard_input_system(keyboard_input: Res<ButtonInput<KeyCode>>, mut movement_x: ResMut<Movement_X>, mut movement_y: ResMut<Movement_Y>) {
+fn keyboard_input_system(keyboard_input: Res<ButtonInput<KeyCode>>, mut movement_x: ResMut<MovementX>, mut movement_y: ResMut<MovementY>) {
     match (keyboard_input.pressed(KeyCode::KeyS), keyboard_input.pressed(KeyCode::KeyW)) {
-        (true, false) => movement_y.set(MovementY::Down),
-        (false, true) => movement_y.set(MovementY::Up),
-        _ => movement_y.set(MovementY::No),
+        (true, false) => movement_y.set(MovementYCoord::Down),
+        (false, true) => movement_y.set(MovementYCoord::Up),
+        _ => movement_y.set(MovementYCoord::No),
     }
     match (keyboard_input.pressed(KeyCode::KeyA), keyboard_input.pressed(KeyCode::KeyD)) {
-        (true, false) => movement_x.set(MovementX::Left),
-        (false, true) => movement_x.set(MovementX::Right),
-        _ => movement_x.set(MovementX::No),
+        (true, false) => movement_x.set(MovementXCoord::Left),
+        (false, true) => movement_x.set(MovementXCoord::Right),
+        _ => movement_x.set(MovementXCoord::No),
     }
 }
