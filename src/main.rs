@@ -1,19 +1,31 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
 use bevy::prelude::*;
+use bevy::utils::HashMap;
+use bevy_editor_pls::prelude::*;
 
 fn main() {
     App::new()
         .insert_resource(MovementY(MovementYCoord::No))
         .insert_resource(MovementX(MovementXCoord::No))
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
-        .add_systems(Startup, (setup, setup_character))
+        // .add_plugins(EditorPlugin::default())
+        .add_systems(Startup, (setup_camera, setup_character))
         .add_systems(Update, sprite_movement)
         .add_systems(Update, animate_sprite)
         .add_systems(Update, keyboard_input_system)
-        .add_systems(Update, get_window)
         .run();
 }
+fn setup_camera(mut commands: Commands) {
+    commands.spawn((
+        Camera2dBundle::default(),
+        MyGameCamera,
+    ));
+}
+#[derive(Component)]
+struct Player;
+#[derive(Component)]
+struct MyGameCamera;
 
 #[derive(Component)]
 struct AnimationIndices {
@@ -118,14 +130,6 @@ fn setup_character(mut commands: Commands, asset_server: Res<AssetServer>,
         commands.spawn(k);
     }
 }
-
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>,
-         texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>) {
-    commands.spawn(Camera2dBundle::default());
-
-    setup_character(commands, asset_server, texture_atlas_layouts);
-}
-
 fn sprite_movement(_time: Res<Time>, mut sprite_position: Query<(&mut Direction, &mut Transform)>, movement_x: Res<MovementX>, movement_y: Res<MovementY>) {
     for (mut _logo, mut transform) in &mut sprite_position {
         match movement_y.get() {
@@ -141,20 +145,6 @@ fn sprite_movement(_time: Res<Time>, mut sprite_position: Query<(&mut Direction,
     }
 }
 
-fn get_window(window: Query<&Window>) {
-    let window = window.single();
-
-    let width = window.resolution.width();
-    let height = window.resolution.height();
-
-    let (x, y) = match window.position {
-        WindowPosition::At(v) => (v.x as f32, v.y as f32),
-        _ => (0., 0.),
-    };
-
-    dbg!(width, height, x, y);
-}
-
 fn keyboard_input_system(keyboard_input: Res<ButtonInput<KeyCode>>, mut movement_x: ResMut<MovementX>, mut movement_y: ResMut<MovementY>) {
     match (keyboard_input.pressed(KeyCode::KeyS), keyboard_input.pressed(KeyCode::KeyW)) {
         (true, false) => movement_y.set(MovementYCoord::Down),
@@ -165,5 +155,10 @@ fn keyboard_input_system(keyboard_input: Res<ButtonInput<KeyCode>>, mut movement
         (true, false) => movement_x.set(MovementXCoord::Left),
         (false, true) => movement_x.set(MovementXCoord::Right),
         _ => movement_x.set(MovementXCoord::No),
+    }
+
+    match keyboard_input.just_pressed(KeyCode::Space) {
+        true=> {},
+        false=> {},
     }
 }
