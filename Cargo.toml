@@ -7,6 +7,13 @@ edition = "2021"
 
 [dependencies]
 
-bevy = "0.13.2"
+bevy = "0.14.1"
 bevy_editor_pls = "0.8.1"
 bevy_editor_pls_core = "0.8.1"
+bevy_ecs_ldtk = { version = "0.10.0", features = ["bevy_ecs_ldtk_macros","atlas","derive"]}
+bevy_render = "0.14.1"
+bevy_ecs_tilemap = { version = "0.14.0", default-features = false, features = ["atlas", "render", "serde"]}
+bevy_asset = { version = "0.14.1"}
+bevy_ecs_ldtk_macros = "0.10.0"
+glam = "0.28.0"
+rand = "0.8.5"

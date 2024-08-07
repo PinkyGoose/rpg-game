@@ -1,164 +1,85 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
-use bevy::prelude::*;
-use bevy::utils::HashMap;
-use bevy_editor_pls::prelude::*;
+use crate::goat::GoatBundle;
+use crate::player::PlayerBundle;
+use crate::constants::GRID_SIZE;
+use bevy_ecs_ldtk::LdtkSpriteSheetBundle;
+use bevy::prelude::KeyCode;
+use bevy::prelude::ButtonInput;
+use bevy::prelude::With;
+use bevy_ecs_ldtk::LdtkWorldBundle;
+use bevy::prelude::Camera2dBundle;
+use bevy::prelude::Res;
+use bevy::prelude::Commands;
+use bevy::prelude::Changed;
+use bevy_ecs_ldtk::GridCoords;
+use bevy::prelude::Transform;
+use bevy::prelude::Query;
+use crate::wall::cache_wall_locations;
+use bevy::prelude::Update;
+use crate::wall::LevelWalls;
+use crate::wall::WallBundle;
+use bevy_ecs_ldtk::LevelSelection;
+use bevy::prelude::Startup;
+use bevy::DefaultPlugins;
+use bevy::prelude::App;
+use bevy_ecs_ldtk_macros::LdtkEntity;
+use bevy::prelude::Bundle;
+use bevy::prelude::Component;
+use bevy_asset::AssetServer;
+use bevy_render::prelude::ImagePlugin;
+use bevy::prelude::PluginGroup;
+use bevy_ecs_ldtk::app::LdtkEntityAppExt;
+use bevy_ecs_ldtk::app::LdtkIntCellAppExt;
+use bevy::prelude::IVec2;
+use crate::movement::{move_all, move_player_from_input};
+
+mod wall;
+mod constants;
+mod player;
+mod goat;
+mod movement;
 
 fn main() {
     App::new()
-        .insert_resource(MovementY(MovementYCoord::No))
-        .insert_resource(MovementX(MovementXCoord::No))
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
-        // .add_plugins(EditorPlugin::default())
-        .add_systems(Startup, (setup_camera, setup_character))
-        .add_systems(Update, sprite_movement)
-        .add_systems(Update, animate_sprite)
-        .add_systems(Update, keyboard_input_system)
+        .add_plugins(bevy_ecs_ldtk::LdtkPlugin)
+        .add_systems(Startup, setup)
+        .insert_resource(LevelSelection::index(0))
+        .register_ldtk_entity::<PlayerBundle>("Player")
+        .register_ldtk_entity::<GoatBundle>("Goat")
+        .register_ldtk_int_cell::<WallBundle>(1)
+        .init_resource::<LevelWalls>()
+        .add_systems(
+            Update,
+            (
+                move_player_from_input,
+                translate_grid_coords_entities,
+                cache_wall_locations,
+                move_all,
+            )
+        )
         .run();
 }
-fn setup_camera(mut commands: Commands) {
-    commands.spawn((
-        Camera2dBundle::default(),
-        MyGameCamera,
-    ));
-}
-#[derive(Component)]
-struct Player;
-#[derive(Component)]
-struct MyGameCamera;
 
-#[derive(Component)]
-struct AnimationIndices {
-    first: usize,
-    last: usize,
-}
-
-#[derive(Component, Deref, DerefMut)]
-struct AnimationTimer(Timer);
-
-fn animate_sprite(
-    time: Res<Time>,
-    mut query: Query<(&AnimationIndices, &mut AnimationTimer, &mut TextureAtlas)>,
+fn translate_grid_coords_entities(
+    mut grid_coords_entities: Query<(&mut Transform, &GridCoords), Changed<GridCoords>>,
 ) {
-    for (indices, mut timer, mut atlas) in &mut query {
-        timer.tick(time.delta());
-        if timer.just_finished() {
-            atlas.index = if atlas.index == indices.last {
-                indices.first
-            } else {
-                atlas.index + 1
-            };
-        }
+    for (mut transform, grid_coords) in grid_coords_entities.iter_mut() {
+        transform.translation =
+            bevy_ecs_ldtk::utils::grid_coords_to_translation(*grid_coords, IVec2::splat(GRID_SIZE))
+                .extend(transform.translation.z);
     }
 }
+fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let mut camera = Camera2dBundle::default();
+    camera.projection.scale = 0.5;
+    camera.transform.translation.x += 1280.0 / 4.0;
+    camera.transform.translation.y += 720.0 / 4.0;
+    commands.spawn(camera);
 
-#[derive(Component)]
-enum Direction {
-    Up,
-    _Down,
-}
-
-#[derive(Clone, Copy, Debug)]
-// #[derive(Resource)]
-enum MovementYCoord {
-    Up,
-    Down,
-    No,
-}
-
-#[derive(Clone, Copy)]
-enum MovementXCoord {
-    Left,
-    Right,
-    No,
-}
-
-#[derive(Resource)]
-struct MovementX(MovementXCoord);
-
-impl MovementX {
-    pub fn get(&self) -> MovementXCoord {
-        self.0
-    }
-    pub fn set(&mut self, m: MovementXCoord) {
-        self.0 = m;
-    }
-}
-
-#[derive(Resource)]
-struct MovementY(MovementYCoord);
-
-impl crate::MovementY {
-    pub fn get(&self) -> MovementYCoord {
-        self.0
-    }
-    pub fn set(&mut self, m: MovementYCoord) {
-        self.0 = m;
-    }
-}
-
-fn setup_character(mut commands: Commands, asset_server: Res<AssetServer>,
-                   mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>) {
-    let texture = asset_server.load("goose/universal_man.png");
-    let num_of_sprites = 8;
-    let num_of_frames = 2;
-    let layout = TextureAtlasLayout::from_grid(Vec2::new(64.0, 64.0), num_of_frames, num_of_sprites, None, None);
-    let texture_atlas_layout = texture_atlas_layouts.add(layout);
-
-    let transform = Transform { scale: Vec3::splat(3.0), translation: Vec3::new(100., 0., 0.), ..default() };
-    let sprite_bundle = SpriteBundle {
-        texture,
-        transform,
-        ..default()
-    };
-
-    for i in 0..num_of_sprites {
-        if i == 4 || i == 6 {
-            continue;
-        }
-        let animation_indices = AnimationIndices { first: i * num_of_frames, last: (i + 1) * num_of_frames - 1 };
-        let k = (
-            sprite_bundle.clone(),
-            TextureAtlas {
-                layout: texture_atlas_layout.clone(),
-                index: animation_indices.first,
-            },
-            animation_indices,
-            AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
-            Direction::Up,
-        );
-        commands.spawn(k);
-    }
-}
-fn sprite_movement(_time: Res<Time>, mut sprite_position: Query<(&mut Direction, &mut Transform)>, movement_x: Res<MovementX>, movement_y: Res<MovementY>) {
-    for (mut _logo, mut transform) in &mut sprite_position {
-        match movement_y.get() {
-            MovementYCoord::Up => transform.translation.y += 5.,
-            MovementYCoord::Down => transform.translation.y -= 5.,// * time.delta_seconds(),
-            _ => {}
-        }
-        match movement_x.get() {
-            MovementXCoord::Left => transform.translation.x -= 5.,// * time.delta_seconds(),
-            MovementXCoord::Right => transform.translation.x += 5.,// * time.delta_seconds(),
-            _ => {}
-        }
-    }
-}
-
-fn keyboard_input_system(keyboard_input: Res<ButtonInput<KeyCode>>, mut movement_x: ResMut<MovementX>, mut movement_y: ResMut<MovementY>) {
-    match (keyboard_input.pressed(KeyCode::KeyS), keyboard_input.pressed(KeyCode::KeyW)) {
-        (true, false) => movement_y.set(MovementYCoord::Down),
-        (false, true) => movement_y.set(MovementYCoord::Up),
-        _ => movement_y.set(MovementYCoord::No),
-    }
-    match (keyboard_input.pressed(KeyCode::KeyA), keyboard_input.pressed(KeyCode::KeyD)) {
-        (true, false) => movement_x.set(MovementXCoord::Left),
-        (false, true) => movement_x.set(MovementXCoord::Right),
-        _ => movement_x.set(MovementXCoord::No),
-    }
-
-    match keyboard_input.just_pressed(KeyCode::Space) {
-        true=> {},
-        false=> {},
-    }
+    commands.spawn(LdtkWorldBundle {
+        ldtk_handle: asset_server.load("map/firstmap.ldtk"),
+        ..Default::default()
+    });
 }
