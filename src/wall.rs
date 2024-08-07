@@ -3,7 +3,8 @@ use crate::constants::GRID_SIZE;
 use bevy_ecs_ldtk::prelude::LdtkProject;
 use std::collections::HashSet;
 use bevy::asset::{Assets, Handle};
-use bevy::prelude::{Bundle, Component, EventReader, Query, Res, ResMut, Resource, With};
+use bevy::math::{IVec2, Vec3};
+use bevy::prelude::{Bundle, Component, EventReader, Query, Res, ResMut, Resource, Vec2, With};
 use bevy_ecs_ldtk::{GridCoords, LdtkIntCell, LevelEvent};
 use bevy_ecs_ldtk::assets::LevelMetadataAccessor;
 
@@ -51,6 +52,8 @@ pub struct LevelWalls {
 }
 
 impl LevelWalls {
+    //TODO добавить к y и x размеры спрайта
+    //TODO разделить на проверки по вертикали и по горизонтали
     pub fn in_wall(&self, grid_coords: &GridCoords) -> bool {
         grid_coords.x < 0
             || grid_coords.y < 0
@@ -58,4 +61,15 @@ impl LevelWalls {
             || grid_coords.y >= self.level_height
             || self.wall_locations.contains(grid_coords)
     }
+    pub fn in_wall_with_size(&self, coords: &Vec2, size: i32) -> bool {
+        let half_size = (size/2) as f32;
+        let minus_half_size = (-1*size/2) as f32;
+        let coords = *coords;
+        self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(coords+Vec2::new(half_size, half_size), IVec2::splat(GRID_SIZE)))||
+            self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(coords+Vec2::new(half_size, minus_half_size), IVec2::splat(GRID_SIZE)))||
+            self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(coords+Vec2::new(minus_half_size, half_size), IVec2::splat(GRID_SIZE)))||
+            self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(coords+Vec2::new(minus_half_size, minus_half_size), IVec2::splat(GRID_SIZE)))
+
+    }
+
 }
