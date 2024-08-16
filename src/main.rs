@@ -1,59 +1,51 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
-use crate::player::spawn_player;
-use crate::spawn::{ SpawnPointId, UnresolvedIdRef};
-use crate::spawn::{cache_entry_point_locations, EntryPoint, EntryPointBundle, LevelEntryPoints,  SpawnPointBundle};
-use crate::spawn::SpawnPoint;
-use crate::goat::GoatBundle;
-use crate::player::{Player, PlayerBundle};
-use crate::constants::GRID_SIZE;
-use bevy_ecs_ldtk::LdtkSpriteSheetBundle;
-use bevy::prelude::{Entity, KeyCode, ResMut};
-use bevy::prelude::ButtonInput;
-use bevy::prelude::With;
-use bevy_ecs_ldtk::LdtkWorldBundle;
-use bevy::prelude::Camera2dBundle;
-use bevy::prelude::Res;
-use bevy::prelude::Commands;
-use bevy::prelude::Changed;
-use bevy_ecs_ldtk::GridCoords;
-use bevy::prelude::Transform;
-use bevy::prelude::Query;
-use crate::wall::cache_wall_locations;
-use bevy::prelude::Update;
-use crate::wall::LevelWalls;
-use crate::wall::WallBundle;
-use bevy_ecs_ldtk::LevelSelection;
-use bevy::prelude::Startup;
-use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
-use bevy::DefaultPlugins;
-use bevy::log::info;
-use bevy::prelude::App;
-use bevy_ecs_ldtk_macros::LdtkEntity;
-use bevy::prelude::Bundle;
-use bevy::prelude::Component;
+use crate::systems::caching::entry::cache_entry_point_locations;
+use crate::systems::caching::wall::cache_wall_locations;
+use crate::entities::spawn::spawn_player;
+use crate::{
+    constants::GRID_SIZE,
+    goat::GoatBundle,
+    movement::{move_all, move_player_from_input, randomize_movements},
+    entities::player::{ Player, PlayerBundle},
+    entities::spawn::{
+        EntryPointBundle, LevelEntryPoints,
+        SpawnPointId, UnresolvedIdRef,
+    },
+    entities::wall::{LevelWalls, WallBundle},
+};
+use bevy::{
+    prelude::{
+        App, Camera2dBundle, Changed, Commands, IVec2, PluginGroup, Query, Res, ResMut, Startup,
+        Transform, Update, With,
+    },
+    DefaultPlugins,
+};
 use bevy_asset::AssetServer;
-use bevy_render::prelude::ImagePlugin;
-use bevy::prelude::PluginGroup;
-use bevy_ecs_ldtk::app::LdtkEntityAppExt;
-use bevy_ecs_ldtk::app::LdtkIntCellAppExt;
-use bevy::prelude::IVec2;
+use bevy_ecs_ldtk::{
+    app::{LdtkEntityAppExt, LdtkIntCellAppExt},
+    GridCoords, LdtkWorldBundle, LevelSelection,
+};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use crate::movement::{move_all, move_player_from_input, randomize_movements};
-
-mod wall;
+use bevy_render::prelude::ImagePlugin;
+use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
+use crate::entities::spawn::SpawnPointBundle;
 mod constants;
-mod player;
 mod goat;
 mod movement;
-mod spawn;
+mod entities;
+mod systems;
+
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_plugins(bevy_ecs_ldtk::LdtkPlugin)
         .add_plugins(WorldInspectorPlugin::new())
-        // .add_plugins(FrameTimeDiagnosticsPlugin::default())
+        .add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin)
+        .add_plugins(bevy::diagnostic::EntityCountDiagnosticsPlugin)
+        .add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin)
+        .add_plugins(PerfUiPlugin)
         .add_systems(Startup, setup)
         .insert_resource(LevelSelection::iid("bbd618c0-4ce0-11ef-9196-9768dcadd1bb"))
         .register_ldtk_entity::<PlayerBundle>("Player")
@@ -75,9 +67,9 @@ fn main() {
                 cache_entry_point_locations,
                 move_all,
                 randomize_movements,
-                check_goal,
-                spawn_player
-            )
+                check_player_on_entry,
+                spawn_player,
+            ),
         )
         .run();
 }
@@ -91,50 +83,36 @@ fn translate_grid_coords_entities(
                 .extend(transform.translation.z);
     }
 }
+
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     let mut camera = Camera2dBundle::default();
     camera.projection.scale = 0.5;
     camera.transform.translation.x += 1280.0 / 4.0;
     camera.transform.translation.y += 720.0 / 4.0;
     commands.spawn(camera);
+    commands.spawn(PerfUiBundle::default());
 
     commands.spawn(LdtkWorldBundle {
         ldtk_handle: asset_server.load("map/firstmap.ldtk"),
         ..Default::default()
     });
 }
-
-fn check_goal(
+fn check_player_on_entry(
     mut spawn_point_id: ResMut<SpawnPointId>,
     mut level_selection: ResMut<LevelSelection>,
-    // mut respawn_point: ResMut<SpawnPoint>,
-    players: Query<(Entity,&Transform), (With<Player>, Changed<Transform>)>,
-    entries: Query<&GridCoords, With<EntryPoint>>,
+    players: Query<&Transform, (With<Player>, Changed<Transform>)>,
     level_entries: Res<LevelEntryPoints>,
-
 ) {
-    // let k = players
-    //     .iter();
-    // let j = k.zip(goals.iter());
     let mut dest = None;
-    for (id, player_grid_coords) in players.iter(){
-            for entry in entries.iter(){
-                if let Some(level) = level_entries.in_entry_point_with_size(&player_grid_coords.translation.truncate(), 16){
-                    dest = Some(level);
-                    spawn_point_id.0 = Some(level.spawn_point.clone());
-                }
-            }
+    for player_grid_coords in players.iter() {
+        if let Some(level) =
+            level_entries.in_entry_point_with_size(&player_grid_coords.translation.truncate(), 16)
+        {
+            dest = Some(level);
+            spawn_point_id.0 = Some(level.spawn_point.clone());
         }
-    if let Some(dest) = dest
-    {
-        info!("Пришли");
-        // let mut iid = match level_selection.into_inner() {
-        //     LevelSelection::Iid(iid) => iid,
-        //     _ => panic!("level selection should always be iid in this game"),
-        // };
-
+    }
+    if let Some(dest) = dest {
         *level_selection = LevelSelection::iid(dest.level.clone())
-        // let mut level = dest.level.clone();
-        // iid = &mut level;
     }
 }
