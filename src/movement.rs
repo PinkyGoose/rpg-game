@@ -1,6 +1,6 @@
+use crate::entities::utils::NextUpdate;
 use crate::{
     constants::{GOAT_SPEED, PLAYER_SPEED},
-    goat::NextUpdate,
     entities::player::Player,
     entities::wall::LevelWalls,
 };
@@ -10,6 +10,7 @@ use bevy::{
 };
 use rand::Rng;
 use std::time::Duration;
+use bevy::log::info;
 
 pub fn move_player_from_input(
     mut players: Query<&mut MovementSpeed, With<Player>>,
@@ -30,6 +31,7 @@ pub fn move_player_from_input(
     }
 
     for mut speed in players.iter_mut() {
+        // info!("speed {:?}", speed);
         speed.0 = if movement_direction == Vec2::new(-0., 0.) {
             movement_direction
         } else {

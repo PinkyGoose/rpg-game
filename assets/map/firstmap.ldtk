@@ -23,7 +23,7 @@
 					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
 					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
 					"entityIid": "2a0df730-4ce0-11ef-9e3e-f9c9490fcd56"
-				}, "worldX": 32, "worldY": 208, "widPx": 16, "heiPx": 16, "fields" : {} },
+				}, "worldX": 80, "worldY": 176, "widPx": 16, "heiPx": 16, "fields" : {} },
 				{ "iids": {
 					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
 					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
@@ -894,7 +894,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "Player",
-							"__grid": [2,13],
+							"__grid": [5,11],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 14, "x": 0, "y": 0, "w": 32, "h": 32 },
@@ -903,10 +903,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 12,
-							"px": [32,208],
+							"px": [80,176],
 							"fieldInstances": [],
-							"__worldX": 32,
-							"__worldY": 208
+							"__worldX": 80,
+							"__worldY": 176
 						},
 						{
 							"__identifier": "SpawnPoint",

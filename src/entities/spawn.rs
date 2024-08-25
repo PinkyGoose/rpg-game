@@ -7,6 +7,7 @@ use bevy::{
     },
     utils::HashMap,
 };
+use bevy::log::info;
 use bevy::prelude::{Transform, Without};
 use bevy_ecs_ldtk::{
     prelude::LdtkFields,
@@ -17,6 +18,9 @@ use bevy_inspector_egui::{prelude::ReflectInspectorOptions, InspectorOptions};
 use crate::entities::player::Player;
 
 
+
+
+
 pub fn spawn_player(
     mut level_events: EventReader<LevelEvent>,
     mut player: Query<&mut Transform, With<Player>>,
@@ -25,6 +29,7 @@ pub fn spawn_player(
 ) {
     for level_event in level_events.read() {
         if let LevelEvent::Spawned(_) = level_event {
+            info!("начинаем переносить персонажа в другую локу");
             if let Some(point) = spawn_point.0.clone() {
                 for (spawn, transform) in spawn_points.iter() {
                     if *spawn == point {

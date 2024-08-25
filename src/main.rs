@@ -1,26 +1,27 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::animation::{process_player, spawn_animations};
 use crate::systems::caching::entry::cache_entry_point_locations;
 use crate::systems::caching::wall::cache_wall_locations;
 use crate::entities::spawn::spawn_player;
 use crate::{
     constants::GRID_SIZE,
-    goat::GoatBundle,
-    movement::{move_all, move_player_from_input, randomize_movements},
-    entities::player::{ Player, PlayerBundle},
+    entities::player::{Player, PlayerBundle},
     entities::spawn::{
         EntryPointBundle, LevelEntryPoints,
         SpawnPointId, UnresolvedIdRef,
     },
     entities::wall::{LevelWalls, WallBundle},
+    movement::{move_all, move_player_from_input, randomize_movements},
 };
 use bevy::{
+    DefaultPlugins,
     prelude::{
         App, Camera2dBundle, Changed, Commands, IVec2, PluginGroup, Query, Res, ResMut, Startup,
         Transform, Update, With,
     },
-    DefaultPlugins,
 };
+use bevy::prelude::IntoSystemConfigs;
 use bevy_asset::AssetServer;
 use bevy_ecs_ldtk::{
     app::{LdtkEntityAppExt, LdtkIntCellAppExt},
@@ -28,10 +29,11 @@ use bevy_ecs_ldtk::{
 };
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_render::prelude::ImagePlugin;
+use bevy_spritesheet_animation::plugin::SpritesheetAnimationPlugin;
 use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
+use entities::goat::GoatBundle;
 use crate::entities::spawn::SpawnPointBundle;
 mod constants;
-mod goat;
 mod movement;
 mod entities;
 mod systems;
@@ -45,10 +47,11 @@ fn main() {
         .add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin)
         .add_plugins(bevy::diagnostic::EntityCountDiagnosticsPlugin)
         .add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin)
+        .add_plugins(SpritesheetAnimationPlugin)
         .add_plugins(PerfUiPlugin)
         .add_systems(Startup, setup)
         .insert_resource(LevelSelection::iid("bbd618c0-4ce0-11ef-9196-9768dcadd1bb"))
-        .register_ldtk_entity::<PlayerBundle>("Player")
+        // .register_ldtk_entity::<PlayerBundle>("Player")
         .register_ldtk_entity::<GoatBundle>("Goat")
         .register_ldtk_entity::<SpawnPointBundle>("SpawnPoint")
         .register_ldtk_entity::<EntryPointBundle>("EntryPoint")
@@ -68,9 +71,13 @@ fn main() {
                 move_all,
                 randomize_movements,
                 check_player_on_entry,
-                spawn_player,
+                process_player,
+                spawn_player.after(process_player),
             ),
         )
+        .add_systems(Startup, (
+            spawn_animations
+        ))
         .run();
 }
 

@@ -1,8 +1,8 @@
+use crate::entities::utils::NextUpdate;
 use crate::movement::{Character, MovementSpeed};
 use bevy::prelude::{Bundle, Component};
 use bevy_ecs_ldtk::LdtkSpriteSheetBundle;
 use bevy_ecs_ldtk_macros::LdtkEntity;
-use std::time::Duration;
 
 #[derive(Default, Component)]
 pub struct Goat;
@@ -17,8 +17,4 @@ pub struct GoatBundle {
     character: Character,
     movement_speed: MovementSpeed,
     next_speed_update: NextUpdate,
-}
-#[derive(Default, Component, Debug)]
-pub struct NextUpdate {
-    pub time: Duration,
 }
