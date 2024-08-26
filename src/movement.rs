@@ -11,16 +11,20 @@ use bevy::{
 use rand::Rng;
 use std::time::Duration;
 use bevy::log::info;
+use bevy_spritesheet_animation::component::SpritesheetAnimation;
+use bevy_spritesheet_animation::library::SpritesheetLibrary;
 
 pub fn move_player_from_input(
-    mut players: Query<&mut MovementSpeed, With<Player>>,
+    mut players: Query<(&mut MovementSpeed,&mut SpritesheetAnimation), With<Player>>,
     input: Res<ButtonInput<KeyCode>>,
+    library: Res<SpritesheetLibrary>,
 ) {
     let mut movement_direction = Vec2::new(-0., 0.);
     if input.pressed(KeyCode::KeyW) {
         movement_direction += Vec2::new(0., 1.);
     }
     if input.pressed(KeyCode::KeyA) {
+
         movement_direction += Vec2::new(-1., 0.);
     }
     if input.pressed(KeyCode::KeyS) {
@@ -30,14 +34,41 @@ pub fn move_player_from_input(
         movement_direction += Vec2::new(1., 0.);
     }
 
-    for mut speed in players.iter_mut() {
+    for (mut speed, mut animation) in players.iter_mut() {
         // info!("speed {:?}", speed);
+        // info!("animeee {:?}", animee);
+        if movement_direction.x< 0.{
+            if let Some(id) = library.animation_with_name("run_left") {
+                animation.animation_id = id;
+
+                info!("left");
+            }
+        }
+        else if movement_direction.x >0.{
+            if let Some(id) = library.animation_with_name("run_right") {
+                animation.animation_id = id;
+                info!("right");
+            }
+        }
+        else{
+            if let Some(id) = library.animation_with_name("archer_idle") {
+                animation.animation_id = id;
+                info!("idle");
+            }
+        }
+
         speed.0 = if movement_direction == Vec2::new(-0., 0.) {
             movement_direction
         } else {
             movement_direction.normalize() * PLAYER_SPEED
         };
     }
+
+
+
+
+
+
 }
 
 pub fn randomize_movements(
