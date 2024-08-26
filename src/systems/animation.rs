@@ -1,15 +1,15 @@
 use bevy::log::info;
-use bevy::prelude::{Camera2dBundle, default, SpriteBundle,  TextureAtlas, Transform};
+use bevy::prelude::{default, SpriteBundle,  TextureAtlas, Transform};
 use bevy::prelude::{Added, BuildChildren, Commands, Entity, Query, Res, ResMut, TextureAtlasLayout, UVec2};
 use bevy_asset::{Assets, AssetServer};
 use bevy_ecs_ldtk::EntityInstance;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
 use bevy_spritesheet_animation::prelude::{AnimationRepeat, Spritesheet, SpritesheetAnimation};
-use crate::entities::player::{Player, PlayerBundle, PlayerChild};
+use crate::entities::player::{PlayerBundle, PlayerChild};
 pub fn process_player(
     mut commands: Commands,
     new_entity_instances: Query<(Entity, &EntityInstance, &Transform), Added<EntityInstance>>,
-    mut library: ResMut<SpritesheetLibrary>,
+    library: ResMut<SpritesheetLibrary>,
     assets: Res<AssetServer>,
     mut atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
 )

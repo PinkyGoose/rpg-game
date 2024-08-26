@@ -6,7 +6,7 @@ use crate::systems::caching::wall::cache_wall_locations;
 use crate::entities::spawn::spawn_player;
 use crate::{
     constants::GRID_SIZE,
-    entities::player::{Player, PlayerBundle},
+    entities::player::{Player},
     entities::spawn::{
         EntryPointBundle, LevelEntryPoints,
         SpawnPointId, UnresolvedIdRef,
@@ -75,9 +75,9 @@ fn main() {
                 spawn_player.after(process_player),
             ),
         )
-        .add_systems(Startup, (
+        .add_systems(Startup,
             spawn_animations
-        ))
+        )
         .run();
 }
 
