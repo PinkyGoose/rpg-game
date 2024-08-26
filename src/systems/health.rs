@@ -1,5 +1,6 @@
+use bevy::hierarchy::Children;
 use bevy::math::Vec3;
-use bevy::prelude::{Added, BuildChildren, Commands, default, Entity, info, Query, Res, Sprite, Time, Transform, Vec2};
+use bevy::prelude::{Added, BuildChildren, Commands, default, Entity,  Query, Res, Sprite, Time, Transform, Vec2};
 use bevy::sprite::{Anchor, SpriteBundle};
 use bevy_color::Color;
 use bevy_color::palettes::basic::{GRAY, GREEN, RED};
@@ -57,13 +58,27 @@ pub fn regen_health(
 ){
 
     for (mut health, regen) in query.iter_mut() {
-        info! ("regen_health");
+        // info! ("regen_health");
         let mut new_health = health.current+ regen.0 * time.delta_seconds();
-        // info!("{destination:?}");
         if new_health >health.max {
             new_health = health.max;
         }
             health.current = new_health;
 
+    }
+}
+
+// Функция обновления полоски здоровья
+pub fn update_health_bars(
+    health_query: Query<(&Health, &Children)>,
+    mut health_bar_query: Query<(&HealthBar, &mut Sprite)>,
+) {
+    for (health, children) in health_query.iter() {
+        for &child in children.iter() {
+            if let Ok((_health_bar, mut sprite)) = health_bar_query.get_mut(child) {
+                // Обновление длины полоски здоровья в зависимости от текущего здоровья
+                sprite.custom_size = Some(Vec2::new(50.0 * (health.current / health.max), 5.0));
+            }
+        }
     }
 }
