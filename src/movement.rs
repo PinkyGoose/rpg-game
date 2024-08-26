@@ -10,7 +10,6 @@ use bevy::{
 };
 use rand::Rng;
 use std::time::Duration;
-use bevy::log::info;
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
 
@@ -41,19 +40,19 @@ pub fn move_player_from_input(
             if let Some(id) = library.animation_with_name("run_left") {
                 animation.animation_id = id;
 
-                info!("left");
+                // info!("left");
             }
         }
         else if movement_direction.x >0.{
             if let Some(id) = library.animation_with_name("run_right") {
                 animation.animation_id = id;
-                info!("right");
+                // info!("right");
             }
         }
         else{
             if let Some(id) = library.animation_with_name("archer_idle") {
                 animation.animation_id = id;
-                info!("idle");
+                // info!("idle");
             }
         }
 

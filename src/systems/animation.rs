@@ -1,11 +1,16 @@
+use crate::entities::health::Regeneration;
+use bevy::prelude::Children;
+use crate::entities::health::{Health, HealthBar};
 use bevy::log::info;
-use bevy::prelude::{default, SpriteBundle,  TextureAtlas, Transform};
+use bevy::prelude::{ default, Sprite, SpriteBundle, TextureAtlas, Transform, Vec2};
 use bevy::prelude::{Added, BuildChildren, Commands, Entity, Query, Res, ResMut, TextureAtlasLayout, UVec2};
 use bevy_asset::{Assets, AssetServer};
 use bevy_ecs_ldtk::EntityInstance;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
 use bevy_spritesheet_animation::prelude::{AnimationRepeat, Spritesheet, SpritesheetAnimation};
+
 use crate::entities::player::{PlayerBundle, PlayerChild};
+
 pub fn process_player(
     mut commands: Commands,
     new_entity_instances: Query<(Entity, &EntityInstance, &Transform), Added<EntityInstance>>,
@@ -14,10 +19,7 @@ pub fn process_player(
     mut atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
 )
 {
-
-
-if let Ok((entity, entity_instance, transform)) = new_entity_instances.get_single(){
-
+    if let Ok((entity, entity_instance, transform)) = new_entity_instances.get_single() {
         if entity_instance.identifier == "Player".to_string() {
             info!("переписываем игрока");
 
@@ -34,17 +36,21 @@ if let Ok((entity, entity_instance, transform)) = new_entity_instances.get_singl
                 .entity(entity)
                 // .insert(Player)
                 .insert((SpriteBundle {
-
                     texture,
                     transform: *transform,
                     ..default()
-                },TextureAtlas {
+                }, TextureAtlas {
                     layout,
                     ..default()
-                },SpritesheetAnimation::from_id(library.animation_with_name("archer_idle").unwrap()),
-                    PlayerBundle{
-                        ..default()
-                    }
+                }, SpritesheetAnimation::from_id(library.animation_with_name("archer_idle").unwrap()),
+                         PlayerBundle {
+                             ..default()
+                         },
+                         Health {
+                             current: 34.0, // Изначальное значение здоровья
+                             max: 100.0,
+                         },
+                        Regeneration(8.),
                 ))
                 .with_children(|commands| {
                     commands.spawn(PlayerChild);
@@ -52,8 +58,22 @@ if let Ok((entity, entity_instance, transform)) = new_entity_instances.get_singl
         }
     }
 }
+// Функция обновления полоски здоровья
+pub fn update_health_bars(
+    health_query: Query<(&Health, &Children)>,
+    mut health_bar_query: Query<(&HealthBar, &mut Sprite)>,
+) {
+    for (health, children) in health_query.iter() {
+        for &child in children.iter() {
+            if let Ok((_health_bar, mut sprite)) = health_bar_query.get_mut(child) {
+                // Обновление длины полоски здоровья в зависимости от текущего здоровья
+                sprite.custom_size = Some(Vec2::new(50.0 * (health.current / health.max), 5.0));
+            }
+        }
+    }
+}
 
-pub fn spawn_animations( mut library: ResMut<SpritesheetLibrary>){
+pub fn spawn_animations(mut library: ResMut<SpritesheetLibrary>) {
 
 
     // Create different animations
@@ -82,8 +102,6 @@ pub fn spawn_animations( mut library: ResMut<SpritesheetLibrary>){
     });
 
     library.name_animation(run_anim_id, "run_right").unwrap();
-
-
 
 
     // Run Left

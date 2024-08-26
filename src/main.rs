@@ -1,5 +1,7 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::health::regen_health;
+use crate::systems::animation::update_health_bars;
 use crate::systems::animation::{process_player, spawn_animations};
 use crate::systems::caching::entry::cache_entry_point_locations;
 use crate::systems::caching::wall::cache_wall_locations;
@@ -33,6 +35,8 @@ use bevy_spritesheet_animation::plugin::SpritesheetAnimationPlugin;
 use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
 use entities::goat::GoatBundle;
 use crate::entities::spawn::SpawnPointBundle;
+use crate::systems::health::spawn_health_bars;
+
 mod constants;
 mod movement;
 mod entities;
@@ -73,6 +77,9 @@ fn main() {
                 check_player_on_entry,
                 process_player,
                 spawn_player.after(process_player),
+                update_health_bars,
+                spawn_health_bars,
+                regen_health
             ),
         )
         .add_systems(Startup,
