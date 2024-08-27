@@ -1,5 +1,6 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::attacking::{attack_player_from_input, check_killed};
 use crate::entities::friendly::Friendly;
 use crate::systems::caching::visible_distanse::calculate_visible;
 use crate::systems::health::calculate_health;
@@ -47,7 +48,6 @@ use crate::systems::health::{regen_health, update_health_bars};
 use crate::systems::health::spawn_health_bars;
 use crate::systems::spawn::check_player_on_entry;
 use crate::systems::spawn::process_player;
-
 mod constants;
 mod movement;
 mod entities;
@@ -96,7 +96,9 @@ fn main() {
                 regen_health,
                 calculate_friendly,
                 calculate_health,
-                calculate_visible
+                calculate_visible,
+                attack_player_from_input,
+                check_killed
 
             ),
         )
