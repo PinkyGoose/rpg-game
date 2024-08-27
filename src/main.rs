@@ -1,5 +1,6 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::entities::friendly::Friendly;
 use crate::systems::caching::visible_distanse::calculate_visible;
 use crate::systems::health::calculate_health;
 use crate::systems::caching::friendly::calculate_friendly;
@@ -37,6 +38,7 @@ use crate::{
 };
 use crate::entities::spawn::spawn_player;
 use crate::entities::spawn::SpawnPointBundle;
+use crate::entities::utils::VisiblyDistance;
 use crate::systems::animation::spawn_animations;
 use crate::systems::caching::coords::translate_grid_coords_entities;
 use crate::systems::caching::entry::cache_entry_point_locations;
@@ -70,7 +72,12 @@ fn main() {
         .init_resource::<LevelWalls>()
         .register_type::<SpawnPointId>()
         .register_type::<UnresolvedIdRef>()
+        .register_type::<VisiblyDistance>()
+        .register_type::<Friendly>()
+        .register_type::<SpawnPointId>()
         .init_resource::<LevelEntryPoints>()
+        // .init_resource::<VisiblyDistance>()
+        // .init_resource::<Friendly>()
         .insert_resource(SpawnPointId(None))
         .add_systems(
             Update,

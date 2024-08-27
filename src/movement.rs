@@ -88,7 +88,7 @@ pub fn randomize_movements(
         if visible.0 > player_translation.distance(translation) {
             match friendly {
                 Friendly::Enemy => {
-                    let speed_calculated = translation-player_translation;
+                    let speed_calculated = player_translation-translation;
                     info!("Должен подходить {speed_calculated:?}");
                     speed.0 = speed_calculated.normalize() * GOAT_SPEED;//TODO заменить на Movement_Speed
                     time_update.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5));
@@ -97,7 +97,7 @@ pub fn randomize_movements(
 
                 Friendly::Afraid => {
 
-                    let speed_calculated = player_translation-translation;
+                    let speed_calculated = translation-player_translation;
                     info!("Должен убегать {speed_calculated:?}");
                     speed.0 = speed_calculated.normalize() * GOAT_SPEED;//TODO заменить на Movement_Speed
                     time_update.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5));

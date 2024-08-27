@@ -11,7 +11,7 @@
 	"iid": "4435a0f0-4ce0-11ef-86e5-35002ab60e68",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 41,
+	"nextUid": 46,
 	"identifierStyle": "Capitalize",
 	"toc": [
 		{
@@ -84,132 +84,6 @@
 					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
 					"entityIid": "0cd35100-4ce0-11ef-acbd-b56770005d7d"
 				}, "worldX": 384, "worldY": 144, "widPx": 16, "heiPx": 16, "fields" : {} }
-			]
-		},
-		{
-			"identifier": "SpawnPoint",
-			"instances": [],
-			"instancesData": [
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "8b92e890-4ce0-11ef-9e3e-e15f4f4ab289"
-				}, "worldX": 64, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "8be74a20-4ce0-11ef-9e3e-f3f3af7186af"
-				}, "worldX": 48, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "8c3b0f70-4ce0-11ef-9e3e-b562321e76b3"
-				}, "worldX": 32, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "c1700d90-4ce0-11ef-a8c7-d3bfe2808668"
-				}, "worldX": 224, "worldY": 208, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "e04ff400-4ce0-11ef-a8c7-b34e5b9d4201"
-				}, "worldX": 224, "worldY": 48, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "e0ab3360-4ce0-11ef-a8c7-45ee345b534e"
-				}, "worldX": 224, "worldY": 64, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "e0de2a40-4ce0-11ef-a8c7-5b0b7d04af5d"
-				}, "worldX": 224, "worldY": 80, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
-					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
-					"entityIid": "e197b640-4ce0-11ef-a8c7-6991b466c0f8"
-				}, "worldX": 224, "worldY": 32, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
-					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
-					"entityIid": "b0ae8090-4ce0-11ef-a8c7-59ac0cd72272"
-				}, "worldX": 464, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
-					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
-					"entityIid": "c2422aa0-4ce0-11ef-a8c7-07ddce5c25e4"
-				}, "worldX": 272, "worldY": 208, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
-					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
-					"entityIid": "e2cdc540-4ce0-11ef-a8c7-cd4ff3ea761f"
-				}, "worldX": 272, "worldY": 32, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
-					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
-					"entityIid": "e3085d40-4ce0-11ef-a8c7-6d25560a5301"
-				}, "worldX": 272, "worldY": 48, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
-					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
-					"entityIid": "e338e320-4ce0-11ef-a8c7-7df2b4f67a86"
-				}, "worldX": 272, "worldY": 64, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
-					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
-					"entityIid": "e3665bc0-4ce0-11ef-a8c7-4f659e2948c3"
-				}, "worldX": 272, "worldY": 80, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
-					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
-					"entityIid": "a2eb2a70-4ce0-11ef-9e3e-e9f8cff7025e"
-				}, "worldX": 32, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
-					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
-					"entityIid": "a316f560-4ce0-11ef-9e3e-097fa8ac8c81"
-				}, "worldX": 48, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
-					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
-					"entityIid": "a341d5f0-4ce0-11ef-9e3e-3572a4dbc831"
-				}, "worldX": 64, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
-					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
-					"entityIid": "a2edd780-4ce0-11ef-a8c7-2b9a6b2da170"
-				}, "worldX": 224, "worldY": -96, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "2b615160-4ce0-11ef-9e3e-6bb24669f779",
-					"layerIid": "2b617870-4ce0-11ef-9e3e-130b948f7be0",
-					"entityIid": "9dc139f0-4ce0-11ef-a8c7-537d1b9c1364"
-				}, "worldX": 272, "worldY": -96, "widPx": 16, "heiPx": 16, "fields" : {} },
-				{ "iids": {
-					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
-					"levelIid": "2b615160-4ce0-11ef-9e3e-6bb24669f779",
-					"layerIid": "2b617870-4ce0-11ef-9e3e-130b948f7be0",
-					"entityIid": "b19277f0-4ce0-11ef-a8c7-391f532036c5"
-				}, "worldX": 464, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} }
 			]
 		},
 		{
@@ -372,6 +246,132 @@
 					"layerIid": "2b617870-4ce0-11ef-9e3e-130b948f7be0",
 					"entityIid": "ae0e3330-4ce0-11ef-a8c7-f353ba2f1d6e"
 				}, "worldX": 464, "worldY": -16, "widPx": 16, "heiPx": 16, "fields" : {} }
+			]
+		},
+		{
+			"identifier": "SpawnPoint",
+			"instances": [],
+			"instancesData": [
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "8b92e890-4ce0-11ef-9e3e-e15f4f4ab289"
+				}, "worldX": 64, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "8be74a20-4ce0-11ef-9e3e-f3f3af7186af"
+				}, "worldX": 48, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "8c3b0f70-4ce0-11ef-9e3e-b562321e76b3"
+				}, "worldX": 32, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "c1700d90-4ce0-11ef-a8c7-d3bfe2808668"
+				}, "worldX": 224, "worldY": 208, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "e04ff400-4ce0-11ef-a8c7-b34e5b9d4201"
+				}, "worldX": 224, "worldY": 48, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "e0ab3360-4ce0-11ef-a8c7-45ee345b534e"
+				}, "worldX": 224, "worldY": 64, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "e0de2a40-4ce0-11ef-a8c7-5b0b7d04af5d"
+				}, "worldX": 224, "worldY": 80, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "e197b640-4ce0-11ef-a8c7-6991b466c0f8"
+				}, "worldX": 224, "worldY": 32, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "b0ae8090-4ce0-11ef-a8c7-59ac0cd72272"
+				}, "worldX": 464, "worldY": 16, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "c2422aa0-4ce0-11ef-a8c7-07ddce5c25e4"
+				}, "worldX": 272, "worldY": 208, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "e2cdc540-4ce0-11ef-a8c7-cd4ff3ea761f"
+				}, "worldX": 272, "worldY": 32, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "e3085d40-4ce0-11ef-a8c7-6d25560a5301"
+				}, "worldX": 272, "worldY": 48, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "e338e320-4ce0-11ef-a8c7-7df2b4f67a86"
+				}, "worldX": 272, "worldY": 64, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "e3665bc0-4ce0-11ef-a8c7-4f659e2948c3"
+				}, "worldX": 272, "worldY": 80, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
+					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
+					"entityIid": "a2eb2a70-4ce0-11ef-9e3e-e9f8cff7025e"
+				}, "worldX": 32, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
+					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
+					"entityIid": "a316f560-4ce0-11ef-9e3e-097fa8ac8c81"
+				}, "worldX": 48, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
+					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
+					"entityIid": "a341d5f0-4ce0-11ef-9e3e-3572a4dbc831"
+				}, "worldX": 64, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "d14f74e0-4ce0-11ef-9e3e-75fc166ced58",
+					"layerIid": "d14f9bf0-4ce0-11ef-9e3e-87e653009a96",
+					"entityIid": "a2edd780-4ce0-11ef-a8c7-2b9a6b2da170"
+				}, "worldX": 224, "worldY": -96, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "2b615160-4ce0-11ef-9e3e-6bb24669f779",
+					"layerIid": "2b617870-4ce0-11ef-9e3e-130b948f7be0",
+					"entityIid": "9dc139f0-4ce0-11ef-a8c7-537d1b9c1364"
+				}, "worldX": 272, "worldY": -96, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "2b615160-4ce0-11ef-9e3e-6bb24669f779",
+					"layerIid": "2b617870-4ce0-11ef-9e3e-130b948f7be0",
+					"entityIid": "b19277f0-4ce0-11ef-a8c7-391f532036c5"
+				}, "worldX": 464, "worldY": -32, "widPx": 16, "heiPx": 16, "fields" : {} }
 			]
 		},
 		{
@@ -909,41 +909,6 @@
 			]
 		},
 		{
-			"identifier": "SpawnPoint",
-			"uid": 17,
-			"tags": [],
-			"exportToToc": true,
-			"allowOutOfBounds": true,
-			"doc": null,
-			"width": 16,
-			"height": 16,
-			"resizableX": false,
-			"resizableY": false,
-			"minWidth": null,
-			"maxWidth": null,
-			"minHeight": null,
-			"maxHeight": null,
-			"keepAspectRatio": false,
-			"tileOpacity": 1,
-			"fillOpacity": 0.08,
-			"lineOpacity": 0,
-			"hollow": false,
-			"color": "#BE4A2F",
-			"renderMode": "Tile",
-			"showName": true,
-			"tilesetId": 19,
-			"tileRenderMode": "FitInside",
-			"tileRect": { "tilesetUid": 19, "x": 0, "y": 0, "w": 32, "h": 32 },
-			"uiTileRect": null,
-			"nineSliceBorders": [],
-			"maxCount": 0,
-			"limitScope": "PerLevel",
-			"limitBehavior": "MoveLastOne",
-			"pivotX": 0,
-			"pivotY": 0,
-			"fieldDefs": []
-		},
-		{
 			"identifier": "EntryPoint",
 			"uid": 20,
 			"tags": [],
@@ -1017,6 +982,41 @@
 			]
 		},
 		{
+			"identifier": "SpawnPoint",
+			"uid": 17,
+			"tags": [],
+			"exportToToc": true,
+			"allowOutOfBounds": true,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0.08,
+			"lineOpacity": 0,
+			"hollow": false,
+			"color": "#BE4A2F",
+			"renderMode": "Tile",
+			"showName": true,
+			"tilesetId": 19,
+			"tileRenderMode": "FitInside",
+			"tileRect": { "tilesetUid": 19, "x": 0, "y": 0, "w": 32, "h": 32 },
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
+		},
+		{
 			"identifier": "Fignya",
 			"uid": 29,
 			"tags": [],
@@ -1077,7 +1077,195 @@
 					"max": null,
 					"regex": null,
 					"acceptFileTypes": null,
-					"defaultOverride": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["Enemy"]
+					},
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "health_min",
+					"doc": null,
+					"__type": "Float",
+					"uid": 41,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [30] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "health_max",
+					"doc": null,
+					"__type": "Float",
+					"uid": 42,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [80] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "regen_min",
+					"doc": null,
+					"__type": "Float",
+					"uid": 43,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [0.1] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "regen_max",
+					"doc": null,
+					"__type": "Float",
+					"uid": 44,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [1] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "visible_distance",
+					"doc": null,
+					"__type": "Float",
+					"uid": 45,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [150] },
 					"textLanguageMode": null,
 					"symmetricalRef": false,
 					"autoChainRef": true,
@@ -3043,7 +3231,14 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [112,16],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 112,
 							"__worldY": -240
 						},
@@ -3059,10 +3254,17 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [48,80],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Enemy"]
-							}] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Enemy"]
+								}] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 48,
 							"__worldY": -176
 						},
@@ -3078,7 +3280,14 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [208,48],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 208,
 							"__worldY": -208
 						},
@@ -3094,7 +3303,14 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [192,96],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 192,
 							"__worldY": -160
 						},
@@ -3110,7 +3326,14 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [112,128],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 112,
 							"__worldY": -128
 						},
@@ -3126,7 +3349,14 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [128,64],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 128,
 							"__worldY": -192
 						},
@@ -3142,7 +3372,14 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [64,48],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 31, "realEditorValues": [] },
+								{ "__identifier": "health_min", "__type": "Float", "__value": 30, "__tile": null, "defUid": 41, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 80, "__tile": null, "defUid": 42, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.1, "__tile": null, "defUid": 43, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 44, "realEditorValues": [] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 150, "__tile": null, "defUid": 45, "realEditorValues": [] }
+							],
 							"__worldX": 64,
 							"__worldY": -208
 						}

@@ -1,7 +1,10 @@
+use bevy::prelude::ReflectComponent;
+use bevy::prelude::ReflectResource;
 use std::time::Duration;
 use bevy::math::Vec2;
-use bevy::prelude::Component;
-
+use bevy::prelude::{Component, Reflect};
+use bevy_inspector_egui::InspectorOptions;
+use bevy_inspector_egui::prelude::ReflectInspectorOptions;
 #[derive(Default, Component, Debug)]
 pub struct NextUpdate {
     pub time: Duration,
@@ -13,5 +16,6 @@ pub struct Character;
 #[derive(Default, Component, Debug)]
 pub struct MovementSpeed(pub Vec2);
 
-#[derive(Default, Component, Debug)]
+#[derive(Reflect, Default, Component, Debug, InspectorOptions)]
+#[reflect(Component, InspectorOptions)]
 pub struct VisiblyDistance(pub f32);
