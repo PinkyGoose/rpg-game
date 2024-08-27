@@ -1,3 +1,6 @@
+use crate::entities::utils::VisiblyDistance;
+use crate::entities::utils::MovementSpeed;
+use crate::entities::utils::Character;
 use bevy_ecs_ldtk::EntityInstance;
 use bevy::prelude::{Bundle, Component};
 use bevy_ecs_ldtk::LdtkSpriteSheetBundle;
@@ -5,7 +8,6 @@ use bevy_ecs_ldtk_macros::LdtkEntity;
 
 use crate::entities::health::{Health, Regeneration};
 use crate::entities::utils::NextUpdate;
-use crate::movement::{Character, MovementSpeed};
 
 #[derive(Default, Component)]
 pub struct Goat;
@@ -24,6 +26,7 @@ pub struct GoatBundle {
     movement_speed: MovementSpeed,
     next_speed_update: NextUpdate,
     health_regeneration: Regeneration,
+    visibly_distance: VisiblyDistance
 }
 
 // impl Default for GoatBundle {

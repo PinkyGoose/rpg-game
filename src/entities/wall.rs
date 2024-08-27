@@ -1,13 +1,13 @@
+use std::collections::HashSet;
 
-use bevy_ecs_ldtk::GridCoords;
-use bevy_ecs_ldtk::LdtkIntCell;
-use crate::GRID_SIZE;
 use bevy::{
     math::IVec2,
     prelude::{Bundle, Component, Resource, Vec2},
 };
+use bevy_ecs_ldtk::GridCoords;
+use bevy_ecs_ldtk::LdtkIntCell;
 
-use std::collections::HashSet;
+use crate::GRID_SIZE;
 
 #[derive(Default, Component)]
 pub struct Wall;
@@ -16,6 +16,7 @@ pub struct Wall;
 pub struct WallBundle {
     wall: Wall,
 }
+
 #[derive(Default, Resource)]
 pub struct LevelWalls {
     pub wall_locations: HashSet<GridCoords>,
@@ -30,23 +31,29 @@ impl LevelWalls {
             || grid_coords.y >= self.level_height
             || self.wall_locations.contains(grid_coords)
     }
-    pub fn in_wall_with_size(&self, coords: &Vec2, size: i32) -> bool {
+    pub fn in_wall_horizontal_with_size(&self, coords: &Vec2, size: i32) -> bool {
         let half_size = (size / 2 - 2) as f32;
         let minus_half_size = -1. * half_size;
         let coords = *coords;
         self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(
-            coords + Vec2::new(half_size, half_size),
+            coords + Vec2::new(0., half_size),
             IVec2::splat(GRID_SIZE),
         )) || self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(
-            coords + Vec2::new(half_size, minus_half_size),
+            coords + Vec2::new(0., minus_half_size),
+            IVec2::splat(GRID_SIZE),
+        )) || coords.y + minus_half_size < 0.
+    }
+    pub fn in_wall_vertical_with_size(&self, coords: &Vec2, size: i32) -> bool {
+        let half_size = (size / 2 - 2) as f32;
+        let minus_half_size = -1. * half_size;
+        let coords = *coords;
+        self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(
+            coords + Vec2::new(half_size, 0.),
             IVec2::splat(GRID_SIZE),
         )) || self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(
-            coords + Vec2::new(minus_half_size, half_size),
-            IVec2::splat(GRID_SIZE),
-        )) || self.in_wall(&bevy_ecs_ldtk::utils::translation_to_grid_coords(
-            coords + Vec2::new(minus_half_size, minus_half_size),
+            coords + Vec2::new(minus_half_size, 0.),
             IVec2::splat(GRID_SIZE),
         )) || coords.x + minus_half_size < 0.
-            || coords.y + minus_half_size < 0.
     }
+
 }

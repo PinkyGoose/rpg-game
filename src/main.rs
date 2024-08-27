@@ -1,5 +1,6 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::caching::visible_distanse::calculate_visible;
 use crate::systems::health::calculate_health;
 use crate::systems::caching::friendly::calculate_friendly;
 use crate::entities::fignya::FignyaBundle;
@@ -87,7 +88,8 @@ fn main() {
                 spawn_health_bars,
                 regen_health,
                 calculate_friendly,
-                calculate_health
+                calculate_health,
+                calculate_visible
 
             ),
         )

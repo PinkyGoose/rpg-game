@@ -10,7 +10,7 @@ use bevy_ecs_ldtk::prelude::LdtkFields;
 use rand::Rng;
 use crate::entities::health::{Health, HealthBar, HealthBarBackground, Regeneration};
 use crate::entities::player::Player;
-use crate::movement::Character;
+use crate::entities::utils::Character;
 
 // Система для создания полоски здоровья
 pub fn spawn_health_bars(
@@ -91,8 +91,6 @@ pub fn calculate_health(
     mut new_entity_instances: Query<(&EntityInstance, &mut Health, &mut Regeneration), (Added<Character>, Without<Player>)>,
 )
 {
-
-
     for (entity_instance, mut health,mut  regen) in new_entity_instances.iter_mut(){
         let mut rng = rand::thread_rng();
         if let Ok(min) = entity_instance.get_float_field("health_min"){
@@ -123,3 +121,5 @@ pub fn calculate_health(
         }
     }
 }
+
+

@@ -11,7 +11,7 @@
 	"iid": "4435a0f0-4ce0-11ef-86e5-35002ab60e68",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 40,
+	"nextUid": 41,
 	"identifierStyle": "Capitalize",
 	"toc": [
 		{
@@ -23,7 +23,7 @@
 					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
 					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
 					"entityIid": "2a0df730-4ce0-11ef-9e3e-f9c9490fcd56"
-				}, "worldX": 80, "worldY": 176, "widPx": 16, "heiPx": 16, "fields" : {} },
+				}, "worldX": 128, "worldY": 176, "widPx": 16, "heiPx": 16, "fields" : {} },
 				{ "iids": {
 					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
 					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
@@ -50,6 +50,18 @@
 			"instancesData": [
 				{ "iids": {
 					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "23fbbe60-4ce0-11ef-acbd-c3674837b82d"
+				}, "worldX": 160, "worldY": 176, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "bbd618c0-4ce0-11ef-9196-9768dcadd1bb",
+					"layerIid": "bbd63fd0-4ce0-11ef-9196-6bca5b587a69",
+					"entityIid": "2864e4e0-4ce0-11ef-acbd-814699279f1c"
+				}, "worldX": 96, "worldY": 176, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
 					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
 					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
 					"entityIid": "7cb6d210-4ce0-11ef-86e5-8d2a34fdacd9"
@@ -65,7 +77,13 @@
 					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
 					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
 					"entityIid": "68293600-4ce0-11ef-86e5-0b8ed6dc4b37"
-				}, "worldX": 304, "worldY": 128, "widPx": 16, "heiPx": 16, "fields" : {} }
+				}, "worldX": 304, "worldY": 128, "widPx": 16, "heiPx": 16, "fields" : {} },
+				{ "iids": {
+					"worldIid": "4435c800-4ce0-11ef-86e5-4bf3b7482310",
+					"levelIid": "44366440-4ce0-11ef-86e5-91824521974c",
+					"layerIid": "178ed310-4ce0-11ef-86e5-65f889f11c8e",
+					"entityIid": "0cd35100-4ce0-11ef-acbd-b56770005d7d"
+				}, "worldX": 384, "worldY": 144, "widPx": 16, "heiPx": 16, "fields" : {} }
 			]
 		},
 		{
@@ -850,6 +868,43 @@
 					"allowedRefsEntityUid": null,
 					"allowedRefTags": [],
 					"tilesetUid": null
+				},
+				{
+					"identifier": "visible_distance",
+					"doc": null,
+					"__type": "Float",
+					"uid": 40,
+					"type": "F_Float",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Float", "params": [100] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
 				}
 			]
 		},
@@ -1022,10 +1077,7 @@
 					"max": null,
 					"regex": null,
 					"acceptFileTypes": null,
-					"defaultOverride": {
-						"id": "V_String",
-						"params": ["Neytral"]
-					},
+					"defaultOverride": null,
 					"textLanguageMode": null,
 					"symmetricalRef": false,
 					"autoChainRef": true,
@@ -1134,7 +1186,7 @@
 			"padding": 0,
 			"tags": [],
 			"tagsSourceEnumUid": 28,
-			"enumTags": [ { "enumValueId": "Enemy", "tileIds": [] }, { "enumValueId": "Neytral", "tileIds": [] }, { "enumValueId": "Friendly", "tileIds": [] }, { "enumValueId": "Afraid", "tileIds": [] } ],
+			"enumTags": [ { "enumValueId": "Enemy", "tileIds": [] }, { "enumValueId": "Neutral", "tileIds": [] }, { "enumValueId": "Friendly", "tileIds": [] }, { "enumValueId": "Afraid", "tileIds": [] } ],
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": { "opaqueTiles": "00", "averageColors": "2e032e03" }
@@ -1172,14 +1224,14 @@
 			"padding": 0,
 			"tags": [],
 			"tagsSourceEnumUid": 28,
-			"enumTags": [ { "enumValueId": "Enemy", "tileIds": [] }, { "enumValueId": "Neytral", "tileIds": [] }, { "enumValueId": "Friendly", "tileIds": [] }, { "enumValueId": "Afraid", "tileIds": [] } ],
+			"enumTags": [ { "enumValueId": "Enemy", "tileIds": [] }, { "enumValueId": "Neutral", "tileIds": [] }, { "enumValueId": "Friendly", "tileIds": [] }, { "enumValueId": "Afraid", "tileIds": [] } ],
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": { "opaqueTiles": "0", "averageColors": "2295" }
 		}
 	], "enums": [{ "identifier": "Friendly", "uid": 28, "values": [
 		{ "id": "Enemy", "tileRect": null, "color": 12470831 },
-		{ "id": "Neytral", "tileRect": null, "color": 14120515 },
+		{ "id": "Neutral", "tileRect": null, "color": 14120515 },
 		{ "id": "Friendly", "tileRect": null, "color": 6539085 },
 		{ "id": "Afraid", "tileRect": null, "color": 15389866 }
 	], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }], "externalEnums": [], "levelFields": [] },
@@ -1231,7 +1283,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "Player",
-							"__grid": [5,11],
+							"__grid": [8,11],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 14, "x": 0, "y": 0, "w": 32, "h": 32 },
@@ -1240,9 +1292,9 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 12,
-							"px": [80,176],
+							"px": [128,176],
 							"fieldInstances": [],
-							"__worldX": 80,
+							"__worldX": 128,
 							"__worldY": 176
 						},
 						{
@@ -1708,6 +1760,58 @@
 							"fieldInstances": [],
 							"__worldX": 224,
 							"__worldY": 32
+						},
+						{
+							"__identifier": "Goat",
+							"__grid": [10,11],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 15, "x": 0, "y": 0, "w": 64, "h": 64 },
+							"__smartColor": "#FF0044",
+							"iid": "23fbbe60-4ce0-11ef-acbd-c3674837b82d",
+							"width": 16,
+							"height": 16,
+							"defUid": 13,
+							"px": [160,176],
+							"fieldInstances": [
+								{ "__identifier": "health_min", "__type": "Float", "__value": 6, "__tile": null, "defUid": 33, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 30, "__tile": null, "defUid": 34, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 35, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 36, "realEditorValues": [] },
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 39, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Enemy"]
+								}] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 100, "__tile": null, "defUid": 40, "realEditorValues": [] }
+							],
+							"__worldX": 160,
+							"__worldY": 176
+						},
+						{
+							"__identifier": "Goat",
+							"__grid": [6,11],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 15, "x": 0, "y": 0, "w": 64, "h": 64 },
+							"__smartColor": "#FF0044",
+							"iid": "2864e4e0-4ce0-11ef-acbd-814699279f1c",
+							"width": 16,
+							"height": 16,
+							"defUid": 13,
+							"px": [96,176],
+							"fieldInstances": [
+								{ "__identifier": "health_min", "__type": "Float", "__value": 6, "__tile": null, "defUid": 33, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 30, "__tile": null, "defUid": 34, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 35, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 36, "realEditorValues": [] },
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Afraid", "__tile": null, "defUid": 39, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Afraid"]
+								}] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 100, "__tile": null, "defUid": 40, "realEditorValues": [] }
+							],
+							"__worldX": 96,
+							"__worldY": 176
 						}
 					]
 				},
@@ -2067,7 +2171,11 @@
 								{ "__identifier": "health_max", "__type": "Float", "__value": 30, "__tile": null, "defUid": 34, "realEditorValues": [] },
 								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 35, "realEditorValues": [] },
 								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 36, "realEditorValues": [] },
-								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Afraid", "__tile": null, "defUid": 39, "realEditorValues": [] }
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Enemy", "__tile": null, "defUid": 39, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Enemy"]
+								}] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 100, "__tile": null, "defUid": 40, "realEditorValues": [] }
 							],
 							"__worldX": 368,
 							"__worldY": 192
@@ -2089,7 +2197,11 @@
 								{ "__identifier": "health_max", "__type": "Float", "__value": 30, "__tile": null, "defUid": 34, "realEditorValues": [] },
 								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 35, "realEditorValues": [] },
 								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 36, "realEditorValues": [] },
-								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Afraid", "__tile": null, "defUid": 39, "realEditorValues": [] }
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Afraid", "__tile": null, "defUid": 39, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Afraid"]
+								}] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 100, "__tile": null, "defUid": 40, "realEditorValues": [] }
 							],
 							"__worldX": 320,
 							"__worldY": 176
@@ -2111,7 +2223,11 @@
 								{ "__identifier": "health_max", "__type": "Float", "__value": 30, "__tile": null, "defUid": 34, "realEditorValues": [] },
 								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 35, "realEditorValues": [] },
 								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 36, "realEditorValues": [] },
-								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Afraid", "__tile": null, "defUid": 39, "realEditorValues": [] }
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neutral", "__tile": null, "defUid": 39, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Neutral"]
+								}] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 100, "__tile": null, "defUid": 40, "realEditorValues": [] }
 							],
 							"__worldX": 304,
 							"__worldY": 128
@@ -2371,6 +2487,32 @@
 							"fieldInstances": [],
 							"__worldX": 272,
 							"__worldY": 80
+						},
+						{
+							"__identifier": "Goat",
+							"__grid": [8,9],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 15, "x": 0, "y": 0, "w": 64, "h": 64 },
+							"__smartColor": "#FF0044",
+							"iid": "0cd35100-4ce0-11ef-acbd-b56770005d7d",
+							"width": 16,
+							"height": 16,
+							"defUid": 13,
+							"px": [128,144],
+							"fieldInstances": [
+								{ "__identifier": "health_min", "__type": "Float", "__value": 6, "__tile": null, "defUid": 33, "realEditorValues": [] },
+								{ "__identifier": "health_max", "__type": "Float", "__value": 30, "__tile": null, "defUid": 34, "realEditorValues": [] },
+								{ "__identifier": "regen_min", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 35, "realEditorValues": [] },
+								{ "__identifier": "regen_max", "__type": "Float", "__value": 1, "__tile": null, "defUid": 36, "realEditorValues": [] },
+								{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Friendly", "__tile": null, "defUid": 39, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Friendly"]
+								}] },
+								{ "__identifier": "visible_distance", "__type": "Float", "__value": 100, "__tile": null, "defUid": 40, "realEditorValues": [] }
+							],
+							"__worldX": 384,
+							"__worldY": 144
 						}
 					]
 				},
@@ -2901,7 +3043,7 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [112,16],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neytral", "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
 							"__worldX": 112,
 							"__worldY": -240
 						},
@@ -2936,7 +3078,7 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [208,48],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neytral", "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
 							"__worldX": 208,
 							"__worldY": -208
 						},
@@ -2952,7 +3094,7 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [192,96],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neytral", "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
 							"__worldX": 192,
 							"__worldY": -160
 						},
@@ -2968,7 +3110,7 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [112,128],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neytral", "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
 							"__worldX": 112,
 							"__worldY": -128
 						},
@@ -2984,7 +3126,7 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [128,64],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neytral", "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
 							"__worldX": 128,
 							"__worldY": -192
 						},
@@ -3000,7 +3142,7 @@
 							"height": 16,
 							"defUid": 29,
 							"px": [64,48],
-							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": "Neytral", "__tile": null, "defUid": 31, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "Friendly", "__type": "LocalEnum.Friendly", "__value": null, "__tile": null, "defUid": 31, "realEditorValues": [] }],
 							"__worldX": 64,
 							"__worldY": -208
 						}

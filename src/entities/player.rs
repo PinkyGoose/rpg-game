@@ -1,6 +1,6 @@
-use crate::{
-    movement::{Character, MovementSpeed},
-};
+
+use crate::entities::utils::MovementSpeed;
+use crate::entities::utils::Character;
 use bevy::prelude::{Bundle, Component};
 use bevy_ecs_ldtk_macros::LdtkEntity;
 #[derive(Default, Component)]
