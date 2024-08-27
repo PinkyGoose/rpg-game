@@ -1,6 +1,6 @@
 use bevy::prelude::{ Component};
 
-#[derive(Component)]
+#[derive(Default,Component)]
 pub struct Health {
     pub current: f32,
     pub max: f32,
@@ -10,5 +10,5 @@ pub struct HealthBar;
 
 #[derive(Component)]
 pub struct HealthBarBackground;
-#[derive(Component)]
-pub struct Regeneration(pub(crate) f32);
+#[derive(Default, Component)]
+pub struct Regeneration(pub f32);

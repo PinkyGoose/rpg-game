@@ -1,11 +1,16 @@
 use bevy::hierarchy::Children;
+use bevy::log::warn;
 use bevy::math::Vec3;
-use bevy::prelude::{Added, BuildChildren, Commands, default, Entity,  Query, Res, Sprite, Time, Transform, Vec2};
+use bevy::prelude::{Added, BuildChildren, Commands, default, Entity, Query, Res, Sprite, Time, Transform, Vec2, Without};
 use bevy::sprite::{Anchor, SpriteBundle};
 use bevy_color::Color;
 use bevy_color::palettes::basic::{GRAY, GREEN, RED};
+use bevy_ecs_ldtk::EntityInstance;
+use bevy_ecs_ldtk::prelude::LdtkFields;
+use rand::Rng;
 use crate::entities::health::{Health, HealthBar, HealthBarBackground, Regeneration};
 use crate::entities::player::Player;
+use crate::movement::Character;
 
 // Система для создания полоски здоровья
 pub fn spawn_health_bars(
@@ -79,6 +84,42 @@ pub fn update_health_bars(
                 // Обновление длины полоски здоровья в зависимости от текущего здоровья
                 sprite.custom_size = Some(Vec2::new(50.0 * (health.current / health.max), 5.0));
             }
+        }
+    }
+}
+pub fn calculate_health(
+    mut new_entity_instances: Query<(&EntityInstance, &mut Health, &mut Regeneration), (Added<Character>, Without<Player>)>,
+)
+{
+
+
+    for (entity_instance, mut health,mut  regen) in new_entity_instances.iter_mut(){
+        let mut rng = rand::thread_rng();
+        if let Ok(min) = entity_instance.get_float_field("health_min"){
+            if let Ok(max) = entity_instance.get_float_field("health_max"){
+                let cur_health: f32 = rng.gen::<f32>()*(max-min)+max;
+                health.current = cur_health;
+                health.max = cur_health;
+            }
+            else{
+                warn!("не прописано здоровье для  {:?}", entity_instance.identifier);
+            }
+        }
+        else{
+            warn!("не прописано здоровье для  {:?}", entity_instance.identifier);
+        }
+
+        if let Ok(min) = entity_instance.get_float_field("regen_min"){
+            if let Ok(max) = entity_instance.get_float_field("regen_max"){
+                let regeneration: f32 = rng.gen::<f32>()*(max-min)+max;
+                regen.0 = regeneration;
+            }
+            else{
+                warn!("не прописано здоровье для  {:?}", entity_instance.identifier);
+            }
+        }
+        else{
+            warn!("не прописано здоровье для  {:?}", entity_instance.identifier);
         }
     }
 }

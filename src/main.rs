@@ -1,5 +1,8 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::health::calculate_health;
+use crate::systems::caching::friendly::calculate_friendly;
+use crate::entities::fignya::FignyaBundle;
 use bevy::{
     DefaultPlugins,
     prelude::{
@@ -59,6 +62,7 @@ fn main() {
         .insert_resource(LevelSelection::iid("bbd618c0-4ce0-11ef-9196-9768dcadd1bb"))
         // .register_ldtk_entity::<PlayerBundle>("Player")
         .register_ldtk_entity::<GoatBundle>("Goat")
+        .register_ldtk_entity::<FignyaBundle>("Fignya")
         .register_ldtk_entity::<SpawnPointBundle>("SpawnPoint")
         .register_ldtk_entity::<EntryPointBundle>("EntryPoint")
         .register_ldtk_int_cell::<WallBundle>(1)
@@ -81,7 +85,10 @@ fn main() {
                 spawn_player.after(process_player),
                 update_health_bars,
                 spawn_health_bars,
-                regen_health
+                regen_health,
+                calculate_friendly,
+                calculate_health
+
             ),
         )
         .add_systems(Startup,

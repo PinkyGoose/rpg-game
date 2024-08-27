@@ -1,11 +1,11 @@
 use bevy::hierarchy::BuildChildren;
-use bevy::log::info;
 use bevy::math::UVec2;
 use bevy::prelude::{Added, Changed, Commands, default, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas, TextureAtlasLayout, Transform, With};
 use bevy_asset::{Assets, AssetServer};
 use bevy_ecs_ldtk::{EntityInstance, LevelSelection};
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
+
 use crate::entities::health::{Health, Regeneration};
 use crate::entities::player::{Player, PlayerBundle, PlayerChild};
 use crate::entities::spawn::{LevelEntryPoints, SpawnPointId};
@@ -18,9 +18,14 @@ pub fn process_player(
     mut atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
 )
 {
-    if let Ok((entity, entity_instance, transform)) = new_entity_instances.get_single() {
-        if entity_instance.identifier == "Player".to_string() {
-            info!("переписываем игрока");
+    if let Some((entity, _, transform)) = new_entity_instances.iter().find(|(_,s2,_)|{
+        if s2.identifier == "Player".to_string(){
+            return true
+        }
+        false
+    }) {
+        // if entity_instance.identifier == "Player".to_string() {
+        //     info!("переписываем игрока");
 
             let texture = assets.load("archer.png");
 
@@ -55,7 +60,7 @@ pub fn process_player(
                     commands.spawn(PlayerChild);
                 });
         }
-    }
+    // }
 }
 pub fn check_player_on_entry(
     mut spawn_point_id: ResMut<SpawnPointId>,
