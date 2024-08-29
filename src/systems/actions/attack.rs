@@ -1,9 +1,17 @@
+use bevy::prelude::{BuildChildren, Sprite};
 use crate::constants::MISSILE_SPEED;
 use std::time::Duration;
 use bevy::input::ButtonInput;
 use bevy::log::info;
+use bevy::math::{Quat, Vec2, Vec3};
 use bevy::prelude::{Added, Commands, DespawnRecursiveExt, Entity, MouseButton, Query, Res, Time, Transform, With, Without};
+use bevy::prelude::Keyframes::Rotation;
+use bevy::sprite::SpriteBundle;
 use bevy::utils::default;
+use bevy_asset::AssetServer;
+use bevy_color::Color;
+use bevy_color::palettes::basic::GRAY;
+use bevy_render::prelude::InheritedVisibility;
 use log::warn;
 use rand::Rng;
 use crate::entities::friendly::Friendly;
@@ -21,6 +29,7 @@ pub fn attack_player_from_input(
     mut character: Query<(&Transform, &mut Health), Without<Player>>,
     buttons: Res<ButtonInput<MouseButton>>,
     cursor_coords: Res<MyWorldCoords>,
+    assets: Res<AssetServer>,
 ) {
     let player_translation = match players.get_single() {
         Ok(player) => { player.translation.truncate() }
@@ -54,19 +63,35 @@ pub fn attack_player_from_input(
         // Left button was pressed
     }
     if buttons.just_pressed(MouseButton::Right) {
+
+        let texture = assets.load("arrow.png");
+        // SpriteBundle{
+        //     sprite: Default::default(),
+        //     transform: Default::default(),
+        //     global_transform: Default::default(),
+        //     texture: Default::default(),
+        //     visibility: Default::default(),
+        //     inherited_visibility: Default::default(),
+        //     view_visibility: Default::default(),
+        // }
         let missile_bundle = MissileBundle{
             missile: Missile,
             movement_speed: MovementSpeed{
                 0: vec_between_cursor.normalize()*MISSILE_SPEED,
             },
             damage: Damage{0:10.},
-            transform: Transform{
-                translation: player_translation.extend(0.),
-                ..default()
-            },
+
+            transform: Transform::from_xyz(player_translation.x,player_translation.y, 2.).looking_to(Vec3::ZERO,vec_between_cursor.extend(0.)),
+            ..default()
         };
         info!("стриляем");
-        commands.spawn(missile_bundle);
+        commands.spawn(missile_bundle).with_children(|parent| {
+            parent.spawn(SpriteBundle {
+                texture,
+                ..default()
+            });
+
+        });
     }
     //TODO анимация атаки
 }

@@ -1,4 +1,8 @@
-use bevy::prelude::{Bundle, Component, Transform};
+use bevy::prelude::GlobalTransform;
+use bevy::prelude::{Bundle, Component, Sprite, Transform};
+use bevy_asset::Handle;
+use bevy_render::texture::Image;
+use bevy_render::view::InheritedVisibility;
 use crate::entities::utils::MovementSpeed;
 
 #[derive(Component, Default)]
@@ -11,5 +15,7 @@ pub struct MissileBundle{
     pub missile: Missile,
     pub movement_speed: MovementSpeed,
     pub damage: Damage,
-    pub transform: Transform
+    pub transform: Transform,
+    pub global_transform: GlobalTransform,
+    pub inherited_visibility: InheritedVisibility
 }
