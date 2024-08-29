@@ -1,10 +1,12 @@
+use crate::resources::entry_point_destinations::Destination;
+use crate::resources::entry_point_destinations::LevelEntryPoints;
 use bevy::prelude::{Commands, Entity, EventReader, Query, Res, ResMut, With};
 use bevy::utils::HashMap;
 use bevy_asset::{Assets, Handle};
 use bevy_ecs_ldtk::{GridCoords, LevelEvent};
 use bevy_ecs_ldtk::assets::LdtkProject;
 use crate::constants::GRID_SIZE;
-use crate::entities::spawn::{Destination, EntryPoint, LevelEntryPoints, UnresolvedIdRef};
+use crate::entities::spawn::{EntryPoint, UnresolvedIdRef};
 use bevy_ecs_ldtk::assets::LevelMetadataAccessor;
 pub fn cache_entry_point_locations(
     mut commands: Commands,

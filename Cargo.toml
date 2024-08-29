@@ -27,3 +27,4 @@ bevy_color = "0.14.2"
 clap = { version = "4.5.16", features = ["derive"] }
 url = "2.5.0"
 uuid = { version = "1.8.0", features = ["v4"] }
+num = "0.4.3"

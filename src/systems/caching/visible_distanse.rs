@@ -11,14 +11,6 @@ pub fn calculate_visible(
     for (entity_instance, mut visible) in new_entity_instances.iter_mut(){
         if let Ok(dist) = entity_instance.get_float_field("visible_distance"){
             visible.0 = *dist
-            // if let Ok(max) = entity_instance.get_float_field("health_max"){
-            //     let cur_health: f32 = rng.gen::<f32>()*(max-min)+max;
-            //     health.current = cur_health;
-            //     health.max = cur_health;
-            // }
-            // else{
-            //     warn!("не прописано здоровье для  {:?}", entity_instance.identifier);
-            // }
         }
         else{
             warn!("не прописана дистанция видимости  {:?}", entity_instance.identifier);

@@ -8,7 +8,10 @@ use bevy_inspector_egui::prelude::ReflectInspectorOptions;
 pub struct NextUpdate {
     pub time: Duration,
 }
-
+#[derive(Default, Component, Debug)]
+pub struct NextAttack {
+    pub time: Duration,
+}
 #[derive(Default, Component)]
 pub struct Character;
 

@@ -1,3 +1,5 @@
+use crate::resources::entry_point_destinations::LevelEntryPoints;
+use crate::resources::spawn_point::SpawnPointId;
 use bevy::hierarchy::BuildChildren;
 use bevy::math::UVec2;
 use bevy::prelude::{Added, Changed, Commands, default, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas, TextureAtlasLayout, Transform, With};
@@ -8,7 +10,6 @@ use bevy_spritesheet_animation::library::SpritesheetLibrary;
 
 use crate::entities::health::{Health, Regeneration};
 use crate::entities::player::{Player, PlayerBundle, PlayerChild};
-use crate::entities::spawn::{LevelEntryPoints, SpawnPointId};
 
 pub fn process_player(
     mut commands: Commands,

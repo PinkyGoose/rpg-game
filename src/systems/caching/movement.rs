@@ -88,8 +88,13 @@ pub fn randomize_movements(
             match friendly {
                 Friendly::Enemy => {
                     let speed_calculated = player_translation-translation;
-                    // info!("Должен подходить {speed_calculated:?}");
-                    speed.0 = speed_calculated.normalize() * GOAT_SPEED;//TODO заменить на Movement_Speed
+                    if speed_calculated.length()>16. { //TODO тут будет дальность атаки
+                        // info!("Должен подходить {speed_calculated:?}");
+                        speed.0 = speed_calculated.normalize() * GOAT_SPEED; //TODO заменить на Movement_Speed
+                    }
+                    else {
+                        speed.0 = speed_calculated.normalize() * 0.; //TODO заменить на Movement_Speed
+                    }
                     time_update.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5));
                     continue;
                 }
