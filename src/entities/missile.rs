@@ -1,4 +1,4 @@
-use bevy::prelude::{Bundle, Component};
+use bevy::prelude::{Bundle, Component, Transform};
 use crate::entities::utils::MovementSpeed;
 
 #[derive(Component, Default)]
@@ -8,7 +8,8 @@ pub struct Missile;
 pub struct Damage(pub f32);
 #[derive(Bundle, Default)]
 pub struct MissileBundle{
-    missile: Missile,
-    movement_speed: MovementSpeed,
-
+    pub missile: Missile,
+    pub movement_speed: MovementSpeed,
+    pub damage: Damage,
+    pub transform: Transform
 }

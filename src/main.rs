@@ -1,5 +1,6 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::actions::attack::move_missiles;
 use crate::systems::actions::attack::check_killed_player;
 use crate::systems::caching::attack::insert_enemy_attack_time;
 use crate::systems::actions::attack::check_killed;
@@ -116,7 +117,8 @@ fn main() {
         .add_systems(
             Update,
             (
-                check_killed_player
+                check_killed_player,
+                move_missiles
             ),
         )
         .add_systems(Startup,
