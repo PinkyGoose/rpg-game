@@ -6,3 +6,4 @@ pub mod utils;
 pub mod health;
 pub mod fignya;
 pub mod friendly;
+pub mod missile;
