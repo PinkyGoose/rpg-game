@@ -10,7 +10,7 @@ use crate::resources::entry_point_destinations::LevelEntryPoints;
 use crate::resources::spawn_point::SpawnPointId;
 use crate::resources::cursor_position::MyWorldCoords;
 use crate::systems::caching::cursor::my_cursor_system;
-use bevy::prelude::Component;
+use bevy::prelude::{Component, Query, Transform, With, Without};
 use crate::entities::friendly::Friendly;
 use crate::systems::caching::visible_distanse::calculate_visible;
 use crate::systems::health::calculate_health;
@@ -45,6 +45,7 @@ use crate::{
     },
     entities::wall::{LevelWalls, WallBundle},
 };
+use crate::entities::player::Player;
 use crate::entities::spawn::spawn_player;
 use crate::entities::spawn::SpawnPointBundle;
 use crate::entities::utils::VisiblyDistance;
@@ -118,7 +119,8 @@ fn main() {
             Update,
             (
                 check_killed_player,
-                move_missiles
+                move_missiles,
+                show_character
             ),
         )
         .add_systems(Startup,
@@ -158,4 +160,14 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     });
 }
 
-
+fn show_character(
+    mut camera: Query<&mut Transform, With<MainCamera>>,
+    player: Query<&Transform, (With<Player>,Without<MainCamera>) >
+){
+    if let Ok(mut camera) = camera.get_single_mut(){
+        if let Ok(player) = player.get_single(){
+            camera.translation.x = player.translation.x;
+            camera.translation.y = player.translation.y;
+        }
+    }
+}

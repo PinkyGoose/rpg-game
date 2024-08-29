@@ -1,7 +1,5 @@
 use bevy::prelude::GlobalTransform;
-use bevy::prelude::{Bundle, Component, Sprite, Transform};
-use bevy_asset::Handle;
-use bevy_render::texture::Image;
+use bevy::prelude::{Bundle, Component, Transform};
 use bevy_render::view::InheritedVisibility;
 use crate::entities::utils::MovementSpeed;
 

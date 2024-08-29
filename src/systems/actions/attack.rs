@@ -1,17 +1,13 @@
-use bevy::prelude::{BuildChildren, Sprite};
+use bevy::prelude::BuildChildren;
 use crate::constants::MISSILE_SPEED;
 use std::time::Duration;
 use bevy::input::ButtonInput;
 use bevy::log::info;
-use bevy::math::{Quat, Vec2, Vec3};
-use bevy::prelude::{Added, Commands, DespawnRecursiveExt, Entity, MouseButton, Query, Res, Time, Transform, With, Without};
-use bevy::prelude::Keyframes::Rotation;
+use bevy::math::Vec3;
+use bevy::prelude::{ Commands, DespawnRecursiveExt, Entity, MouseButton, Query, Res, Time, Transform, With, Without};
 use bevy::sprite::SpriteBundle;
 use bevy::utils::default;
 use bevy_asset::AssetServer;
-use bevy_color::Color;
-use bevy_color::palettes::basic::GRAY;
-use bevy_render::prelude::InheritedVisibility;
 use log::warn;
 use rand::Rng;
 use crate::entities::friendly::Friendly;
@@ -139,7 +135,7 @@ pub fn move_missiles(
 ) {
     for (entity,mut coords,speed, dmg,_) in missiles.iter_mut() {
         // info!("{destination:?}");
-        let mut speed = speed.0;
+        let speed = speed.0;
         let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
         if level_walls.in_wall_horizontal_with_size(&destination.truncate(), 0)||level_walls.in_wall_vertical_with_size(&destination.truncate(), 0){
             commands.entity(entity).despawn_recursive()
