@@ -1,25 +1,5 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
-use bevy::prelude::GlobalTransform;
-use bevy::prelude::default;
-use bevy_ecs_ldtk::LevelSpawnBehavior;
-use bevy_ecs_ldtk::LdtkSettings;
-use crate::systems::actions::attack::move_missiles;
-use crate::systems::actions::attack::check_killed_player;
-use crate::systems::caching::attack::insert_enemy_attack_time;
-use crate::systems::actions::attack::check_killed;
-use crate::systems::caching::movement::randomize_movements;
-use crate::systems::caching::movement::move_all;
-use crate::resources::entry_point_destinations::LevelEntryPoints;
-use crate::resources::spawn_point::SpawnPointId;
-use crate::resources::cursor_position::MyWorldCoords;
-use crate::systems::caching::cursor::my_cursor_system;
-use bevy::prelude::{Component, Query, Transform, With, Without};
-use crate::entities::friendly::Friendly;
-use crate::systems::caching::visible_distanse::calculate_visible;
-use crate::systems::health::calculate_health;
-use crate::systems::caching::friendly::calculate_friendly;
-use crate::entities::fignya::FignyaBundle;
 use bevy::{
     DefaultPlugins,
     prelude::{
@@ -27,13 +7,17 @@ use bevy::{
         , Update,
     },
 };
-use crate::entities::wall::LevelWalls;
+use bevy::prelude::{Component, Query, Transform, With, Without};
+use bevy::prelude::default;
+use bevy::prelude::GlobalTransform;
 use bevy::prelude::IntoSystemConfigs;
 use bevy_asset::AssetServer;
 use bevy_ecs_ldtk::{
     app::{LdtkEntityAppExt, LdtkIntCellAppExt}
     , LdtkWorldBundle, LevelSelection,
 };
+use bevy_ecs_ldtk::LdtkSettings;
+use bevy_ecs_ldtk::LevelSpawnBehavior;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_render::prelude::ImagePlugin;
 use bevy_spritesheet_animation::plugin::SpritesheetAnimationPlugin;
@@ -45,25 +29,44 @@ use entities::goat::GoatBundle;
 use crate::{
     constants::GRID_SIZE,
     entities::spawn::{
-        EntryPointBundle,
-        UnresolvedIdRef,
+        // EntryPointBundle,
+        // UnresolvedIdRef,
     },
-    entities::wall::{WallBundle},
+    entities::wall::WallBundle,
 };
+use crate::entities::fignya::FignyaBundle;
+use crate::entities::friendly::Friendly;
 use crate::entities::player::Player;
-use crate::entities::spawn::spawn_player;
-use crate::entities::spawn::SpawnPointBundle;
+// use crate::entities::spawn::spawn_player;
+// use crate::entities::spawn::SpawnPointBundle;
 use crate::entities::utils::VisiblyDistance;
+use crate::entities::wall::LevelWalls;
+use crate::resources::cursor_position::MyWorldCoords;
+use crate::resources::entry_point_destinations::LevelEntryPoints;
+use crate::resources::spawn_point::SpawnPointId;
 use crate::systems::actions::attack::{attack_player_from_input, randomize_attacks};
+use crate::systems::actions::attack::check_killed;
+use crate::systems::actions::attack::check_killed_player;
+use crate::systems::actions::attack::move_missiles;
 use crate::systems::animation::spawn_animations;
+use crate::systems::caching::attack::insert_enemy_attack_time;
 use crate::systems::caching::coords::translate_grid_coords_entities;
-use crate::systems::caching::entry::cache_entry_point_locations;
+use crate::systems::caching::cursor::my_cursor_system;
+use crate::systems::caching::entry::{cache_entry_point_locations, LevelSizes};
+use crate::systems::caching::friendly::calculate_friendly;
+use crate::systems::caching::movement::move_all;
 use crate::systems::caching::movement::move_player_from_input;
+use crate::systems::caching::movement::randomize_movements;
+use crate::systems::caching::visible_distanse::calculate_visible;
 use crate::systems::caching::wall::cache_wall_locations;
 use crate::systems::health::{regen_health, update_health_bars};
+use crate::systems::health::calculate_health;
 use crate::systems::health::spawn_health_bars;
+use crate::systems::spawn::cache_neighbor_levels;
 use crate::systems::spawn::check_player_on_entry;
+use crate::systems::spawn::MyLevelNeighbors;
 use crate::systems::spawn::process_player;
+
 mod constants;
 mod entities;
 mod systems;
@@ -89,18 +92,20 @@ fn main() {
         // .register_ldtk_entity::<PlayerBundle>("Player")
         .register_ldtk_entity::<GoatBundle>("Goat")
         .register_ldtk_entity::<FignyaBundle>("Fignya")
-        .register_ldtk_entity::<SpawnPointBundle>("SpawnPoint")
-        .register_ldtk_entity::<EntryPointBundle>("EntryPoint")
+        // .register_ldtk_entity::<SpawnPointBundle>("SpawnPoint")
+        // .register_ldtk_entity::<EntryPointBundle>("EntryPoint")
         .register_ldtk_int_cell::<WallBundle>(1)
         .init_resource::<LevelWalls>()
         .register_type::<SpawnPointId>()
-        .register_type::<UnresolvedIdRef>()
+        // .register_type::<UnresolvedIdRef>()
         .register_type::<VisiblyDistance>()
         .register_type::<Friendly>()
         .init_resource::<LevelEntryPoints>()
         // .init_resource::<VisiblyDistance>()
         // .init_resource::<Friendly>()
         .insert_resource(SpawnPointId(None))
+        .insert_resource(LevelSizes::default())
+        .insert_resource(MyLevelNeighbors::default())
         .add_systems(
             Update,
             (
@@ -112,7 +117,7 @@ fn main() {
                 randomize_movements,
                 check_player_on_entry,
                 process_player,
-                spawn_player.after(process_player),
+                // spawn_player.after(process_player),
                 update_health_bars,
                 spawn_health_bars,
                 regen_health,
@@ -131,7 +136,8 @@ fn main() {
             (
                 check_killed_player,
                 move_missiles,
-                show_character
+                show_character,
+                cache_neighbor_levels.after(cache_entry_point_locations)
             ),
         )
         .add_systems(Startup,
@@ -158,12 +164,13 @@ pub fn dev_plug(mut commands: Commands) {
 /// Used to help identify our main camera
 #[derive(Component)]
 pub struct MainCamera;
+
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     let mut camera = Camera2dBundle::default();
-    camera.projection.scale = 0.5;
+    camera.projection.scale = 1.3;
     camera.transform.translation.x += 1280.0 / 4.0;
     camera.transform.translation.y += 720.0 / 4.0;
-    commands.spawn((camera,MainCamera));
+    commands.spawn((camera, MainCamera));
 
     commands.spawn(LdtkWorldBundle {
         ldtk_handle: asset_server.load("map/firstmap.ldtk"),
@@ -173,10 +180,10 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 fn show_character(
     mut camera: Query<&mut Transform, With<MainCamera>>,
-    player: Query<&GlobalTransform, (With<Player>,Without<MainCamera>) >
-){
-    if let Ok(mut camera) = camera.get_single_mut(){
-        if let Ok(player) = player.get_single(){
+    player: Query<&GlobalTransform, (With<Player>, Without<MainCamera>)>,
+) {
+    if let Ok(mut camera) = camera.get_single_mut() {
+        if let Ok(player) = player.get_single() {
             camera.translation = player.translation();
         }
     }
