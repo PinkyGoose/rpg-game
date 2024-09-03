@@ -1,5 +1,9 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use bevy::prelude::GlobalTransform;
+use bevy::prelude::default;
+use bevy_ecs_ldtk::LevelSpawnBehavior;
+use bevy_ecs_ldtk::LdtkSettings;
 use crate::systems::actions::attack::move_missiles;
 use crate::systems::actions::attack::check_killed_player;
 use crate::systems::caching::attack::insert_enemy_attack_time;
@@ -23,6 +27,7 @@ use bevy::{
         , Update,
     },
 };
+use crate::entities::wall::LevelWalls;
 use bevy::prelude::IntoSystemConfigs;
 use bevy_asset::AssetServer;
 use bevy_ecs_ldtk::{
@@ -43,7 +48,7 @@ use crate::{
         EntryPointBundle,
         UnresolvedIdRef,
     },
-    entities::wall::{LevelWalls, WallBundle},
+    entities::wall::{WallBundle},
 };
 use crate::entities::player::Player;
 use crate::entities::spawn::spawn_player;
@@ -75,6 +80,12 @@ fn main() {
         .add_plugins(SpritesheetAnimationPlugin)
         .insert_resource(LevelSelection::iid("bbd618c0-4ce0-11ef-9196-9768dcadd1bb"))
         .insert_resource(MyWorldCoords::default())
+        .insert_resource(LdtkSettings {
+            level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
+                load_level_neighbors: true
+            },
+            ..default()
+        })
         // .register_ldtk_entity::<PlayerBundle>("Player")
         .register_ldtk_entity::<GoatBundle>("Goat")
         .register_ldtk_entity::<FignyaBundle>("Fignya")
@@ -162,12 +173,11 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 fn show_character(
     mut camera: Query<&mut Transform, With<MainCamera>>,
-    player: Query<&Transform, (With<Player>,Without<MainCamera>) >
+    player: Query<&GlobalTransform, (With<Player>,Without<MainCamera>) >
 ){
     if let Ok(mut camera) = camera.get_single_mut(){
         if let Ok(player) = player.get_single(){
-            camera.translation.x = player.translation.x;
-            camera.translation.y = player.translation.y;
+            camera.translation = player.translation();
         }
     }
 }

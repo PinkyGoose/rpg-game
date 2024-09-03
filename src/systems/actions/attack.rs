@@ -1,4 +1,4 @@
-use bevy::prelude::BuildChildren;
+use bevy::prelude::{BuildChildren, GlobalTransform};
 use crate::constants::MISSILE_SPEED;
 use std::time::Duration;
 use bevy::input::ButtonInput;
@@ -21,14 +21,14 @@ use crate::resources::cursor_position::MyWorldCoords;
 
 pub fn attack_player_from_input(
     mut commands: Commands,
-    players: Query<&mut Transform, With<Player>>,
-    mut character: Query<(&Transform, &mut Health), Without<Player>>,
+    players: Query<&mut GlobalTransform, With<Player>>,
+    mut character: Query<(&GlobalTransform, &mut Health), Without<Player>>,
     buttons: Res<ButtonInput<MouseButton>>,
     cursor_coords: Res<MyWorldCoords>,
     assets: Res<AssetServer>,
 ) {
     let player_translation = match players.get_single() {
-        Ok(player) => { player.translation.truncate() }
+        Ok(player) => { player.translation().truncate() }
         Err(e) => {
             warn!("Нет игрока в move_player_from_input {e:?}");
             return;
@@ -38,8 +38,8 @@ pub fn attack_player_from_input(
     if buttons.just_pressed(MouseButton::Left) {
 
         for (a, mut b) in character.iter_mut() {
-            if a.translation.truncate().distance(player_translation) < 50.0 {
-                let vec_between_creature = a.translation.truncate() - player_translation;
+            if a.translation().truncate().distance(player_translation) < 50.0 {
+                let vec_between_creature = a.translation().truncate() - player_translation;
                 let angle = vec_between_cursor.angle_between(vec_between_creature);
                 let angle = if angle > 0. {
                     angle
@@ -73,10 +73,10 @@ pub fn attack_player_from_input(
         let missile_bundle = MissileBundle{
             missile: Missile,
             movement_speed: MovementSpeed{
-                0: vec_between_cursor.normalize()*MISSILE_SPEED,
+                0: -vec_between_cursor.normalize()*MISSILE_SPEED,
             },
             damage: Damage{0:10.},
-
+            // global_transform: GlobalTransform::from(player_translation.extend(2.))
             transform: Transform::from_xyz(player_translation.x,player_translation.y, 2.).looking_to(Vec3::ZERO,vec_between_cursor.extend(0.)),
             ..default()
         };
@@ -129,25 +129,25 @@ pub fn randomize_attacks(
 pub fn move_missiles(
     time: Res<Time>,
     mut commands: Commands,
-    mut characters: Query<(& Transform, &mut Health), (With<Character>, Without<Player>)>,
-    mut missiles: Query<(Entity,&mut Transform, &MovementSpeed, &Damage, &Missile), (With<Missile>, Without<Character>)>,
+    mut characters: Query<(& GlobalTransform, &mut Health), (With<Character>, Without<Player>)>,
+    mut missiles: Query<(Entity,&GlobalTransform,&mut Transform, &MovementSpeed, &Damage, &Missile), (With<Missile>, Without<Character>)>,
     level_walls: Res<LevelWalls>,
 ) {
-    for (entity,mut coords,speed, dmg,_) in missiles.iter_mut() {
+    for (entity,coords_global, mut coords,speed, dmg,_) in missiles.iter_mut() {
         // info!("{destination:?}");
         let speed = speed.0;
-        let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
+        let destination = coords_global.translation() + speed.extend(0.) * time.delta_seconds();
         if level_walls.in_wall_horizontal_with_size(&destination.truncate(), 0)||level_walls.in_wall_vertical_with_size(&destination.truncate(), 0){
             commands.entity(entity).despawn_recursive()
         }
         for (character_pos, mut health) in characters.iter_mut(){
-            let character_pos = character_pos.translation.truncate();
+            let character_pos = character_pos.translation().truncate();
             if destination.truncate().distance(character_pos)<16.{//TODO заменить 16 на что-то поинтереснее. Это 16 - область вокруг существа, что-то вроде хитбокса
                 health.current -= dmg.0;
                 commands.entity(entity).despawn_recursive();
             }
         }
-        coords.translation = destination;
+        coords.translation += coords_global.translation() - destination;
     }
 }
 

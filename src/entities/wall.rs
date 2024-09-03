@@ -27,11 +27,13 @@ pub struct LevelWalls {
 impl LevelWalls {
     //TODO разделить на проверки по вертикали и по горизонтали
     pub fn in_wall(&self, grid_coords: &GridCoords) -> bool {
+        return false;
         grid_coords.x >= self.level_width
             || grid_coords.y >= self.level_height
             || self.wall_locations.contains(grid_coords)
     }
     pub fn in_wall_horizontal_with_size(&self, coords: &Vec2, size: i32) -> bool {
+        return false;
         let half_size = (size / 2 - 2) as f32;
         let minus_half_size = -1. * half_size;
         let coords = *coords;
@@ -44,6 +46,7 @@ impl LevelWalls {
         )) || coords.y + minus_half_size < 0.
     }
     pub fn in_wall_vertical_with_size(&self, coords: &Vec2, size: i32) -> bool {
+        return false;
         let half_size = (size / 2 - 2) as f32;
         let minus_half_size = -1. * half_size;
         let coords = *coords;
