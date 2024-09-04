@@ -28,17 +28,11 @@ use entities::goat::GoatBundle;
 
 use crate::{
     constants::GRID_SIZE,
-    entities::spawn::{
-        // EntryPointBundle,
-        // UnresolvedIdRef,
-    },
     entities::wall::WallBundle,
 };
 use crate::entities::fignya::FignyaBundle;
 use crate::entities::friendly::Friendly;
 use crate::entities::player::Player;
-// use crate::entities::spawn::spawn_player;
-// use crate::entities::spawn::SpawnPointBundle;
 use crate::entities::utils::VisiblyDistance;
 use crate::entities::wall::LevelWalls;
 use crate::resources::cursor_position::MyWorldCoords;
