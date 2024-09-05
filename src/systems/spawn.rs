@@ -1,78 +1,78 @@
-use bevy::hierarchy::BuildChildren;
-use bevy::math::{IVec2, UVec2, Vec2, Vec3};
-use bevy::prelude::{Component, DespawnRecursiveExt, GlobalTransform, info, Resource};
+
+use crate::entities::level_params::LevelCoords;
+use crate::entities::level_params::LevelSizes;
+use bevy::hierarchy::{BuildChildren, Children};
+use bevy::math::{IVec2, UVec2, Vec2};
+use bevy::prelude::{BuildChildrenTransformExt, Component, DespawnRecursiveExt, GlobalTransform, info, Resource};
 use bevy::prelude::{Added, Changed, Commands, default, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas, TextureAtlasLayout, Transform, With};
 use bevy::utils::{HashMap, HashSet};
 use bevy_asset::{Assets, AssetServer};
-use bevy_ecs_ldtk::{EntityInstance, GridCoords, LevelIid, LevelSelection, LevelSet};
+use bevy_ecs_ldtk::{EntityInstance, GridCoords, LevelIid, LevelSelection};
 use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
-use num::{range_inclusive, range_step};
+use num::{range, range_inclusive};
 
 use crate::entities::health::{Health, Regeneration};
-use crate::entities::player::{Player, PlayerBundle, PlayerChild};
+use crate::entities::player::{Player, PlayerBundle};
 use crate::GRID_SIZE;
-use crate::systems::caching::entry::LevelSizes;
+use bevy::prelude::Vec3;
 
+
+#[derive(Resource)]
+pub struct PlayerSpawnPosition {
+    pub x: f32,
+    pub y: f32,
+}
 pub fn process_player(
     mut commands: Commands,
-    new_entity_instances: Query<(Entity, &EntityInstance, &Transform), Added<EntityInstance>>,
-    library: ResMut<SpritesheetLibrary>,
     assets: Res<AssetServer>,
+    library: ResMut<SpritesheetLibrary>,
     mut atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
-    player: Query<&Player>,
-)
-{
-    if let Some((entity, _, transform)) = new_entity_instances.iter().find(|(_, s2, _)| {
-        if s2.identifier == "Player".to_string() {
-            return true;
-        }
-        false
-    }) {
-        //TODO спавнить игрока самостоятельно
-        if !player.is_empty() {
-            return;
-        }
-        // if entity_instance.identifier == "Player".to_string() {
-        info!("переписываем игрока");
-
-        let texture = assets.load("archer.png");
-
-        let layout = atlas_layouts.add(TextureAtlasLayout::from_grid(
-            UVec2::new(32, 32),
-            3,
-            3,
-            None,
-            None,
-        ));
-        commands
-            // .entity(entity)
-            // .insert(Player)
-            .spawn((
-                SpriteBundle {
-                texture,
-                transform: Transform::from_xyz(transform.translation.x, transform.translation.y, 100.),
-                ..default()
-            }, TextureAtlas {
-                layout,
-                ..default()
-            }, SpritesheetAnimation::from_id(library.animation_with_name("archer_idle").unwrap()),
-                    PlayerBundle {
-                        ..default()
-                    },
-                    Health {
-                        current: 34.0, // Изначальное значение здоровья
-                        max: 100.0,
-                    },
-                    Regeneration(8.),
-            ));
-            // .with_children(|commands| {
-            //     commands.spawn(PlayerChild);
-            // });
+    player_query: Query<&Player>,
+    player_spawn: Res<PlayerSpawnPosition>, // Используем ресурс с координатами для спавна
+) {
+    // Проверяем, есть ли уже заспавненный игрок
+    if !player_query.is_empty() {
+        return;
     }
-    // }
+
+    // Загружаем текстуру и создаем атлас
+    let texture = assets.load("archer.png");
+
+    let layout = atlas_layouts.add(TextureAtlasLayout::from_grid(
+        UVec2::new(32, 32),
+        3,
+        3,
+        None,
+        None,
+    ));
+
+    // Спавним игрока с координатами из ресурса PlayerSpawnPosition
+    commands.spawn((
+        SpriteBundle {
+            texture,
+            transform: Transform::from_xyz(player_spawn.x, player_spawn.y, 3.0).with_scale(Vec3::new(0.5,0.5,0.5)), // Используем координаты из ресурса
+
+            ..default()
+        },
+        TextureAtlas {
+            layout,
+            ..default()
+        },
+        SpritesheetAnimation::from_id(library.animation_with_name("archer_idle").unwrap()),
+        PlayerBundle {
+            ..default()
+        },
+        Health {
+            current: 34.0, // Изначальное значение здоровья
+            max: 100.0,
+        },
+        Regeneration(8.0),
+    ));
 }
+
+
 
 #[derive(Default, Debug, Resource)]
 pub struct MyLevelNeighbors {
@@ -86,9 +86,10 @@ pub fn cache_neighbor_levels(
     mut commands: Commands,
     need_to_cache_neighbors: Query<Entity, With<NeedToCacheNeighbors>>,
     level_selection: Res<LevelSelection>,
-    levels: Query<(&Transform, &GlobalTransform, &LevelIid), With<LevelIid>>,
+    levels: Query<(&LevelIid), With<LevelIid>>,
     mut my_level_neighbors: ResMut<MyLevelNeighbors>,
     level_sizes: Res<LevelSizes>,
+    level_coords: Res<LevelCoords>,
 ) {
     if need_to_cache_neighbors.is_empty() {
         return;
@@ -96,74 +97,74 @@ pub fn cache_neighbor_levels(
     for need in need_to_cache_neighbors.iter() {
         commands.entity(need).despawn_recursive();
     }
-    let mut k = HashMap::new();
+    // let mut k = HashMap::new();
     let mut vec_neighbors = Vec::new();
-    let mut level_current = None;
-    if let LevelSelection::Iid(id) = level_selection.as_ref() {
-        for (i, j, k) in levels.iter() {
+
+    let current_level = if let LevelSelection::Iid(id) = level_selection.as_ref() {
+        for k in levels.iter() {
             if id != k {
-                vec_neighbors.push((i, j, k));
-            } else {
-                level_current = Some((j, k));
+                vec_neighbors.push(k);
             }
         }
-    }
+        id
+    }else { return; };
 
 
-    if let Some((global_transform, id)) = level_current {
-        let current_level_size = if let Some(some) = level_sizes.sizes.get(id) {
+
+        let current_level_size = if let Some(some) = level_sizes.sizes.get(current_level) {
             some
         } else { return; };
-        let transforms_left = global_transform.translation().truncate()
-            - Vec2::new(1., 1.);
-        let transforms_right = global_transform.translation().truncate()
-            + Vec2::new(current_level_size.0 as f32, current_level_size.1 as f32)
-            + Vec2::new(1., 1.);
-        let mut hash_set_grids = HashSet::new();
-        let grid_size_vec = IVec2::new(GRID_SIZE, GRID_SIZE);
-        for i in range_inclusive(0, current_level_size.0 / GRID_SIZE) {
-            let vec_to_coords = Vec2::new(transforms_left.x + (GRID_SIZE * i) as f32, transforms_left.y);
-            hash_set_grids.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-            let vec_to_coords = Vec2::new(transforms_right.x - (GRID_SIZE * i) as f32, transforms_right.y);
-            hash_set_grids.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-        }
-        for i in range_inclusive(0, current_level_size.1 / GRID_SIZE) {
-            let vec_to_coords = Vec2::new(transforms_left.x, transforms_left.y + (GRID_SIZE * i) as f32);
-            hash_set_grids.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-            let vec_to_coords = Vec2::new(transforms_right.x, transforms_right.y - (GRID_SIZE * i) as f32);
-            hash_set_grids.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-        }
-        for ((n_transform, n_global_transform, n_id)) in vec_neighbors {
-            let level_size = if let Some(some) = level_sizes.sizes.get(n_id) {
-                some
-            } else { return; };
-            let mut grids_of_neighbor = HashSet::new();
-            let n_transforms_left = n_global_transform.translation().truncate()
-                // - Vec2::new(current_level_size.0 as f32, current_level_size.1 as f32) / 2.
-                + Vec2::new(1., 1.);
-            let n_transforms_right = n_global_transform.translation().truncate()
-                + Vec2::new(level_size.0 as f32, level_size.1 as f32)
-                - Vec2::new(1., 1.);
-            for i in range_inclusive(0, level_size.0 / GRID_SIZE) {
-                let vec_to_coords = Vec2::new(n_transforms_left.x + (GRID_SIZE * i) as f32, n_transforms_left.y);
-                grids_of_neighbor.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-                let vec_to_coords = Vec2::new(n_transforms_right.x - (GRID_SIZE * i) as f32, n_transforms_right.y);
-                grids_of_neighbor.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-            }
-            for i in range_inclusive(0, level_size.1 / GRID_SIZE) {
-                let vec_to_coords = Vec2::new(n_transforms_left.x, n_transforms_left.y + (GRID_SIZE * i) as f32);
-                grids_of_neighbor.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-                let vec_to_coords = Vec2::new(n_transforms_right.x, n_transforms_right.y - (GRID_SIZE * i) as f32);
-                grids_of_neighbor.insert(translation_to_grid_coords(vec_to_coords, grid_size_vec));
-            }
-            for neighbor_grid in &grids_of_neighbor {
-                if let Some(a) = hash_set_grids.take(neighbor_grid) {
-                    k.insert(a, n_id.clone());
-                }
-            }
-        }
+    let current_level_pos = if let Some(some) = level_coords.sizes.get(current_level) {
+        some
+    } else { return; };
+
+    let mut neighbor_grid_map = HashMap::new();
+
+    let current_level_left_bottom = current_level_pos.grid_coords-GridCoords::new(1,1);
+    let current_level_right_top = current_level_pos.grid_coords+ GridCoords::from(current_level_size.grid_size);
+    // info!("current_level_left_bottom {:?} {:?}",current_level, current_level_left_bottom);
+    // info!("current_level_right_top {:?}", current_level_right_top);
+    let mut hash_set_current_level = HashSet::new();
+    for i in range_inclusive(current_level_left_bottom.x,current_level_right_top.x){
+        hash_set_current_level.insert(GridCoords::new(i, current_level_right_top.y));
+        hash_set_current_level.insert(GridCoords::new(i, current_level_left_bottom.y));
     }
-    my_level_neighbors.jija = k;
+    for i in range_inclusive(current_level_left_bottom.y,current_level_right_top.y){
+        hash_set_current_level.insert(GridCoords::new(current_level_right_top.x, i));
+        hash_set_current_level.insert(GridCoords::new(current_level_left_bottom.x,i));
+    }
+    // info!("for current_level exits {:?} {:?}",hash_set_current_level.clone().into_iter().count(), hash_set_current_level);
+
+    for level_neighbor in vec_neighbors{
+        let level_neighbor_size = if let Some(some) = level_sizes.sizes.get(level_neighbor) {
+            some
+        } else { return; };
+        let level_neighbor_pos = if let Some(some) = level_coords.sizes.get(level_neighbor) {
+            some
+        } else { return; };
+        let level_neighbor_left_bottom = level_neighbor_pos.grid_coords;
+        let level_neighbor_right_top = level_neighbor_pos.grid_coords+ GridCoords::from(level_neighbor_size.grid_size)-GridCoords::new(1,1);
+        // info!("level_neighbor_left_bottom {:?} {:?}",level_neighbor, level_neighbor_left_bottom);
+        // info!("level_neighbor_right_top {:?}", level_neighbor_right_top);
+        let mut hash_set_level_neighbor = HashSet::new();
+        for i in range_inclusive(level_neighbor_left_bottom.x,level_neighbor_right_top.x){
+            hash_set_level_neighbor.insert(GridCoords::new(i, level_neighbor_right_top.y));
+            hash_set_level_neighbor.insert(GridCoords::new(i, level_neighbor_left_bottom.y));
+            // info!("Идем по иксу {:?} {:?} {:?}",i,level_neighbor_right_top.y,level_neighbor_left_bottom.y)
+        }
+        for i in range_inclusive(level_neighbor_left_bottom.y,level_neighbor_right_top.y){
+            hash_set_level_neighbor.insert(GridCoords::new(level_neighbor_right_top.x, i));
+            hash_set_level_neighbor.insert(GridCoords::new(level_neighbor_left_bottom.x,i));
+        }
+        for neighbor_grid in &hash_set_level_neighbor {
+                        if let Some(a) = hash_set_current_level.take(neighbor_grid) {
+                            neighbor_grid_map.insert(a, level_neighbor.clone());
+                        }
+                    }
+        // info!("for level_neighbor exits {:?} {:?}",hash_set_level_neighbor.clone().into_iter().count(), hash_set_level_neighbor);
+    }
+
+    my_level_neighbors.jija = neighbor_grid_map;
 }
 
 
@@ -174,7 +175,7 @@ pub fn check_player_on_entry(
 ) {
     if let Ok(player) = players.get_single() {
         if let Some(a) = coords_exits.jija.get(&translation_to_grid_coords(player.translation().truncate(), IVec2::new(GRID_SIZE, GRID_SIZE))) {
-            info!("level to move {:?}", a);
+            // info!("level to move {:?}", a);
             *level_selection = LevelSelection::iid(a.clone())
         }
     }

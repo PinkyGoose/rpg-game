@@ -1,5 +1,8 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
+use crate::systems::caching::level_params::cache_level_params;
+use crate::entities::level_params::LevelCoords;
+use crate::entities::level_params::LevelSizes;
 use bevy::{
     DefaultPlugins,
     prelude::{
@@ -46,7 +49,6 @@ use crate::systems::animation::spawn_animations;
 use crate::systems::caching::attack::insert_enemy_attack_time;
 use crate::systems::caching::coords::translate_grid_coords_entities;
 use crate::systems::caching::cursor::my_cursor_system;
-use crate::systems::caching::entry::{cache_entry_point_locations, LevelSizes};
 use crate::systems::caching::friendly::calculate_friendly;
 use crate::systems::caching::movement::move_all;
 use crate::systems::caching::movement::move_player_from_input;
@@ -56,7 +58,7 @@ use crate::systems::caching::wall::cache_wall_locations;
 use crate::systems::health::{regen_health, update_health_bars};
 use crate::systems::health::calculate_health;
 use crate::systems::health::spawn_health_bars;
-use crate::systems::spawn::cache_neighbor_levels;
+use crate::systems::spawn::{cache_neighbor_levels, PlayerSpawnPosition};
 use crate::systems::spawn::check_player_on_entry;
 use crate::systems::spawn::MyLevelNeighbors;
 use crate::systems::spawn::process_player;
@@ -89,6 +91,10 @@ fn main() {
         // .register_ldtk_entity::<SpawnPointBundle>("SpawnPoint")
         // .register_ldtk_entity::<EntryPointBundle>("EntryPoint")
         .register_ldtk_int_cell::<WallBundle>(1)
+        // .register_ldtk_int_cell_for_layer::<WallBundle>(1)
+        // .register_ldtk_int_cell::<WallBundle>(1)
+        // .register_ldtk_int_cell::<WallBundle>(1)
+        // .register_default_ldtk_int_cell()
         .init_resource::<LevelWalls>()
         .register_type::<SpawnPointId>()
         // .register_type::<UnresolvedIdRef>()
@@ -99,18 +105,19 @@ fn main() {
         // .init_resource::<Friendly>()
         .insert_resource(SpawnPointId(None))
         .insert_resource(LevelSizes::default())
+        .insert_resource(LevelCoords::default())
         .insert_resource(MyLevelNeighbors::default())
+        .insert_resource(PlayerSpawnPosition { x: 100.0, y: 0. })
         .add_systems(
             Update,
             (
                 move_player_from_input,
                 translate_grid_coords_entities,
-                cache_wall_locations,
-                cache_entry_point_locations,
+                cache_wall_locations.after(cache_neighbor_levels),
+                cache_level_params,
                 move_all,
                 randomize_movements,
                 check_player_on_entry,
-                process_player,
                 // spawn_player.after(process_player),
                 update_health_bars,
                 spawn_health_bars,
@@ -131,12 +138,13 @@ fn main() {
                 check_killed_player,
                 move_missiles,
                 show_character,
-                cache_neighbor_levels.after(cache_entry_point_locations)
+                cache_neighbor_levels.after(cache_level_params)
             ),
         )
         .add_systems(Startup,
                      (
-                         spawn_animations, setup
+                         spawn_animations, setup,
+                     process_player.after(spawn_animations),
                      ),
         );
     if args.dev_tools {
@@ -178,6 +186,7 @@ fn show_character(
 ) {
     if let Ok(mut camera) = camera.get_single_mut() {
         if let Ok(player) = player.get_single() {
+
             camera.translation = player.translation();
         }
     }

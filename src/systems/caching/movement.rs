@@ -5,8 +5,12 @@ use bevy::{
     prelude::{ KeyCode, Query, Res, Time, Transform, Vec2, With, Without},
 };
 use bevy::log::warn;
+use bevy::math::IVec2;
+use bevy::prelude::{Changed, GlobalTransform};
+use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
+use log::info;
 use rand::Rng;
 
 use crate::{
@@ -14,13 +18,14 @@ use crate::{
     entities::player::Player,
     entities::wall::LevelWalls,
 };
+use crate::constants::GRID_SIZE;
 use crate::entities::friendly::Friendly;
 use crate::entities::utils::{Character, MovementSpeed};
 use crate::entities::utils::NextUpdate;
 use crate::entities::utils::VisiblyDistance;
 
 pub fn move_player_from_input(
-    mut players: Query<(&mut MovementSpeed, &mut SpritesheetAnimation), With<Player>>,
+    mut players: Query<(&mut MovementSpeed,&GlobalTransform, &Transform, &mut SpritesheetAnimation), With<Player>>,
     input: Res<ButtonInput<KeyCode>>,
     library: Res<SpritesheetLibrary>,
 ) {
@@ -38,9 +43,11 @@ pub fn move_player_from_input(
         movement_direction += Vec2::new(1., 0.);
     }
 
-    for (mut speed, mut animation) in players.iter_mut() {
+    for (mut speed,a,b, mut animation) in players.iter_mut() {
         // info!("speed {:?}", speed);
         // info!("animeee {:?}", animee);
+
+        // info!("character pos {:?}", translation_to_grid_coords(a.translation().truncate(), IVec2::new(GRID_SIZE,GRID_SIZE)));
         if movement_direction.x < 0. {
             if let Some(id) = library.animation_with_name("run_left") {
                 animation.animation_id = id;
@@ -62,6 +69,7 @@ pub fn move_player_from_input(
         speed.0 = if movement_direction == Vec2::new(-0., 0.) {
             movement_direction
         } else {
+            info!("character pos {:?}", translation_to_grid_coords(b.translation.truncate(), IVec2::new(GRID_SIZE,GRID_SIZE)));
             movement_direction.normalize() * PLAYER_SPEED
         };
     }
@@ -123,22 +131,25 @@ pub fn randomize_movements(
 
 pub fn move_all(
     time: Res<Time>,
-    mut characters: Query<(&mut Transform, &MovementSpeed), With<Character>>,
+    mut characters: Query<(&mut Transform,&GlobalTransform, &MovementSpeed), (With<Player>, Changed<GlobalTransform>)>,
     level_walls: Res<LevelWalls>,
 ) {
-    for (mut coords, speed) in characters.iter_mut() {
+    for (mut coords,coords_global, speed) in characters.iter_mut() {
         // info!("{destination:?}");
         let mut speed = speed.0;
-        let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
-        if level_walls.in_wall_horizontal_with_size(&destination.truncate(), 16){
+        // let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
+        let dest_global = coords.translation.truncate() + speed * time.delta_seconds();
+        // info!("GLOBAL_DESTINATION {:?}", dest_global);
+        // info!("WALLS {:?}", level_walls.wall_locations);
+        if level_walls.in_wall_horizontal_with_size(&dest_global, 16){
             speed.y = 0.;
         }
-        let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
-        if level_walls.in_wall_vertical_with_size(&destination.truncate(), 16){
+        let dest_global = coords.translation.truncate() + speed * time.delta_seconds();
+        // let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
+        if level_walls.in_wall_vertical_with_size(&dest_global, 16){
             speed.x = 0.;
         }
         let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
-
             coords.translation = destination;
     }
 }

@@ -1,5 +1,5 @@
 pub mod wall;
-pub mod entry;
+pub mod level_params;
 pub mod coords;
 pub mod friendly;
 pub mod visible_distanse;
