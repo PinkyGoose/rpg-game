@@ -131,21 +131,16 @@ pub fn randomize_movements(
 
 pub fn move_all(
     time: Res<Time>,
-    mut characters: Query<(&mut Transform,&GlobalTransform, &MovementSpeed), (With<Player>, Changed<GlobalTransform>)>,
+    mut characters: Query<(&mut Transform,&GlobalTransform, &MovementSpeed), (With<Character>, Changed<GlobalTransform>)>,
     level_walls: Res<LevelWalls>,
 ) {
     for (mut coords,coords_global, speed) in characters.iter_mut() {
-        // info!("{destination:?}");
         let mut speed = speed.0;
-        // let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
-        let dest_global = coords.translation.truncate() + speed * time.delta_seconds();
-        // info!("GLOBAL_DESTINATION {:?}", dest_global);
-        // info!("WALLS {:?}", level_walls.wall_locations);
+        let dest_global = coords_global.translation().truncate() + speed * time.delta_seconds();
         if level_walls.in_wall_horizontal_with_size(&dest_global, 16){
             speed.y = 0.;
         }
-        let dest_global = coords.translation.truncate() + speed * time.delta_seconds();
-        // let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
+        let dest_global = coords_global.translation().truncate() + speed * time.delta_seconds();
         if level_walls.in_wall_vertical_with_size(&dest_global, 16){
             speed.x = 0.;
         }
