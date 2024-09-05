@@ -1,26 +1,23 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
-use crate::systems::caching::level_params::cache_level_params;
 use crate::entities::level_params::LevelCoords;
 use crate::entities::level_params::LevelSizes;
-use bevy::{
-    DefaultPlugins,
-    prelude::{
-        App, Camera2dBundle, Commands, PluginGroup, Res, Startup
-        , Update,
-    },
-};
-use bevy::prelude::{Component, Query, Transform, With, Without};
+use crate::systems::caching::level_params::cache_level_params;
 use bevy::prelude::default;
 use bevy::prelude::GlobalTransform;
 use bevy::prelude::IntoSystemConfigs;
-use bevy_asset::AssetServer;
-use bevy_ecs_ldtk::{
-    app::{LdtkEntityAppExt, LdtkIntCellAppExt}
-    , LdtkWorldBundle, LevelSelection,
+use bevy::prelude::{Component, Query, Transform, With, Without};
+use bevy::{
+    prelude::{App, Camera2dBundle, Commands, PluginGroup, Res, Startup, Update},
+    DefaultPlugins,
 };
+use bevy_asset::AssetServer;
 use bevy_ecs_ldtk::LdtkSettings;
 use bevy_ecs_ldtk::LevelSpawnBehavior;
+use bevy_ecs_ldtk::{
+    app::{LdtkEntityAppExt, LdtkIntCellAppExt},
+    LdtkWorldBundle, LevelSelection,
+};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_render::prelude::ImagePlugin;
 use bevy_spritesheet_animation::plugin::SpritesheetAnimationPlugin;
@@ -29,10 +26,6 @@ use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
 
 use entities::goat::GoatBundle;
 
-use crate::{
-    constants::GRID_SIZE,
-    entities::wall::WallBundle,
-};
 use crate::entities::fignya::FignyaBundle;
 use crate::entities::friendly::Friendly;
 use crate::entities::player::Player;
@@ -41,10 +34,10 @@ use crate::entities::wall::LevelWalls;
 use crate::resources::cursor_position::MyWorldCoords;
 use crate::resources::entry_point_destinations::LevelEntryPoints;
 use crate::resources::spawn_point::SpawnPointId;
-use crate::systems::actions::attack::{attack_player_from_input, randomize_attacks};
 use crate::systems::actions::attack::check_killed;
 use crate::systems::actions::attack::check_killed_player;
 use crate::systems::actions::attack::move_missiles;
+use crate::systems::actions::attack::{attack_player_from_input, randomize_attacks};
 use crate::systems::animation::spawn_animations;
 use crate::systems::caching::attack::insert_enemy_attack_time;
 use crate::systems::caching::coords::translate_grid_coords_entities;
@@ -55,20 +48,20 @@ use crate::systems::caching::movement::move_player_from_input;
 use crate::systems::caching::movement::randomize_movements;
 use crate::systems::caching::visible_distanse::calculate_visible;
 use crate::systems::caching::wall::cache_wall_locations;
-use crate::systems::health::{regen_health, update_health_bars};
 use crate::systems::health::calculate_health;
 use crate::systems::health::spawn_health_bars;
-use crate::systems::spawn::{cache_neighbor_levels, PlayerSpawnPosition};
+use crate::systems::health::{regen_health, update_health_bars};
 use crate::systems::spawn::check_player_on_entry;
-use crate::systems::spawn::MyLevelNeighbors;
 use crate::systems::spawn::process_player;
+use crate::systems::spawn::MyLevelNeighbors;
+use crate::systems::spawn::{cache_neighbor_levels, PlayerSpawnPosition};
+use crate::{constants::GRID_SIZE, entities::wall::WallBundle};
 
+mod cli;
 mod constants;
 mod entities;
-mod systems;
-mod cli;
 mod resources;
-
+mod systems;
 
 fn main() {
     let args = cli::Args::parse();
@@ -81,7 +74,7 @@ fn main() {
         .insert_resource(MyWorldCoords::default())
         .insert_resource(LdtkSettings {
             level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
-                load_level_neighbors: true
+                load_level_neighbors: true,
             },
             ..default()
         })
@@ -138,17 +131,20 @@ fn main() {
                 check_killed_player,
                 move_missiles,
                 show_character,
-                cache_neighbor_levels.after(cache_level_params)
+                cache_neighbor_levels.after(cache_level_params),
             ),
         )
-        .add_systems(Startup,
-                     (
-                         spawn_animations, setup,
-                     process_player.after(spawn_animations),
-                     ),
+        .add_systems(
+            Startup,
+            (
+                spawn_animations,
+                setup,
+                process_player.after(spawn_animations),
+            ),
         );
     if args.dev_tools {
-        app = app.add_systems(Startup, dev_plug)
+        app = app
+            .add_systems(Startup, dev_plug)
             .add_plugins(PerfUiPlugin)
             .add_plugins(WorldInspectorPlugin::new())
             .add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin)
@@ -161,7 +157,6 @@ fn main() {
 pub fn dev_plug(mut commands: Commands) {
     commands.spawn(PerfUiBundle::default());
 }
-
 
 /// Used to help identify our main camera
 #[derive(Component)]
@@ -186,7 +181,6 @@ fn show_character(
 ) {
     if let Ok(mut camera) = camera.get_single_mut() {
         if let Ok(player) = player.get_single() {
-
             camera.translation = player.translation();
         }
     }

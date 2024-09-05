@@ -1,11 +1,11 @@
-use std::collections::HashSet;
-use bevy::prelude::Resource;
+use crate::GRID_SIZE;
 use bevy::prelude::Bundle;
+use bevy::prelude::Component;
+use bevy::prelude::Resource;
+use bevy::prelude::{IVec2, Vec2};
 use bevy_ecs_ldtk::GridCoords;
 use bevy_ecs_ldtk::LdtkIntCell;
-use bevy::prelude::Component;
-use crate::GRID_SIZE;
-use bevy::prelude::{Vec2,IVec2};
+use std::collections::HashSet;
 #[derive(Default, Component)]
 pub struct Wall;
 
@@ -20,7 +20,7 @@ pub struct LevelWalls {
 impl LevelWalls {
     //TODO разделить на проверки по вертикали и по горизонтали
     pub fn in_wall(&self, grid_coords: &GridCoords) -> bool {
-            self.wall_locations.contains(grid_coords)
+        self.wall_locations.contains(grid_coords)
     }
     pub fn in_wall_horizontal_with_size(&self, coords: &Vec2, size: i32) -> bool {
         // return false;
@@ -34,7 +34,7 @@ impl LevelWalls {
             coords + Vec2::new(0., minus_half_size),
             IVec2::splat(GRID_SIZE),
         ))
-            //|| coords.y + minus_half_size < 0.
+        //|| coords.y + minus_half_size < 0.
     }
     pub fn in_wall_vertical_with_size(&self, coords: &Vec2, size: i32) -> bool {
         // return false;
@@ -48,7 +48,6 @@ impl LevelWalls {
             coords + Vec2::new(minus_half_size, 0.),
             IVec2::splat(GRID_SIZE),
         ))
-            //|| coords.x + minus_half_size < 0.
+        //|| coords.x + minus_half_size < 0.
     }
-
 }

@@ -1,24 +1,24 @@
 use std::time::Duration;
 
-use bevy::{
-    input::ButtonInput,
-    prelude::{ KeyCode, Query, Res, Time, Transform, Vec2, With, Without},
-};
 use bevy::log::warn;
 use bevy::prelude::{Changed, GlobalTransform};
+use bevy::{
+    input::ButtonInput,
+    prelude::{KeyCode, Query, Res, Time, Transform, Vec2, With, Without},
+};
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
 use rand::Rng;
 
+use crate::entities::friendly::Friendly;
+use crate::entities::utils::NextUpdate;
+use crate::entities::utils::VisiblyDistance;
+use crate::entities::utils::{Character, MovementSpeed};
 use crate::{
     constants::{GOAT_SPEED, PLAYER_SPEED},
     entities::player::Player,
     entities::wall::LevelWalls,
 };
-use crate::entities::friendly::Friendly;
-use crate::entities::utils::{Character, MovementSpeed};
-use crate::entities::utils::NextUpdate;
-use crate::entities::utils::VisiblyDistance;
 
 pub fn move_player_from_input(
     mut players: Query<(&mut MovementSpeed, &mut SpritesheetAnimation), With<Player>>,
@@ -43,7 +43,6 @@ pub fn move_player_from_input(
         if movement_direction.x < 0. {
             if let Some(id) = library.animation_with_name("run_left") {
                 animation.animation_id = id;
-
             }
         } else if movement_direction.x > 0. {
             if let Some(id) = library.animation_with_name("run_right") {
@@ -65,7 +64,16 @@ pub fn move_player_from_input(
 
 pub fn randomize_movements(
     time: Res<Time>,
-    mut creatures: Query<(&mut MovementSpeed, &mut NextUpdate, &Transform, &VisiblyDistance, &Friendly), (With<Character>, Without<Player>)>,
+    mut creatures: Query<
+        (
+            &mut MovementSpeed,
+            &mut NextUpdate,
+            &Transform,
+            &VisiblyDistance,
+            &Friendly,
+        ),
+        (With<Character>, Without<Player>),
+    >,
     player: Query<&Transform, With<Player>>,
 ) {
     let time_elapsed = time.elapsed();
@@ -83,12 +91,12 @@ pub fn randomize_movements(
         if visible.0 > player_translation.distance(translation) {
             match friendly {
                 Friendly::Enemy => {
-                    let speed_calculated = player_translation-translation;
-                    if speed_calculated.length()>16. { //TODO тут будет дальность атаки
+                    let speed_calculated = player_translation - translation;
+                    if speed_calculated.length() > 16. {
+                        //TODO тут будет дальность атаки
                         // info!("Должен подходить {speed_calculated:?}");
                         speed.0 = speed_calculated.normalize() * GOAT_SPEED; //TODO заменить на Movement_Speed
-                    }
-                    else {
+                    } else {
                         speed.0 = speed_calculated.normalize() * 0.; //TODO заменить на Movement_Speed
                     }
                     time_update.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5));
@@ -96,10 +104,9 @@ pub fn randomize_movements(
                 }
 
                 Friendly::Afraid => {
-
-                    let speed_calculated = translation-player_translation;
+                    let speed_calculated = translation - player_translation;
                     // info!("Должен убегать {speed_calculated:?}");
-                    speed.0 = speed_calculated.normalize() * GOAT_SPEED;//TODO заменить на Movement_Speed
+                    speed.0 = speed_calculated.normalize() * GOAT_SPEED; //TODO заменить на Movement_Speed
                     time_update.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5));
                     continue;
                 }
@@ -108,10 +115,9 @@ pub fn randomize_movements(
             }
         }
         if time_update.time < time_elapsed {
-
             let speed_calculated = Vec2::new(rng.gen::<f32>(), rng.gen::<f32>())
                 - Vec2::new(rng.gen::<f32>(), rng.gen::<f32>());
-            speed.0 = speed_calculated.normalize() * GOAT_SPEED;//TODO заменить на Movement_Speed
+            speed.0 = speed_calculated.normalize() * GOAT_SPEED; //TODO заменить на Movement_Speed
             time_update.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5));
         }
     }
@@ -119,20 +125,23 @@ pub fn randomize_movements(
 
 pub fn move_all(
     time: Res<Time>,
-    mut characters: Query<(&mut Transform,&GlobalTransform, &MovementSpeed), (With<Character>, Changed<GlobalTransform>)>,
+    mut characters: Query<
+        (&mut Transform, &GlobalTransform, &MovementSpeed),
+        (With<Character>, Changed<GlobalTransform>),
+    >,
     level_walls: Res<LevelWalls>,
 ) {
-    for (mut coords,coords_global, speed) in characters.iter_mut() {
+    for (mut coords, coords_global, speed) in characters.iter_mut() {
         let mut speed = speed.0;
         let dest_global = coords_global.translation().truncate() + speed * time.delta_seconds();
-        if level_walls.in_wall_horizontal_with_size(&dest_global, 16){
+        if level_walls.in_wall_horizontal_with_size(&dest_global, 16) {
             speed.y = 0.;
         }
         let dest_global = coords_global.translation().truncate() + speed * time.delta_seconds();
-        if level_walls.in_wall_vertical_with_size(&dest_global, 16){
+        if level_walls.in_wall_vertical_with_size(&dest_global, 16) {
             speed.x = 0.;
         }
         let destination = coords.translation + speed.extend(0.) * time.delta_seconds();
-            coords.translation = destination;
+        coords.translation = destination;
     }
 }

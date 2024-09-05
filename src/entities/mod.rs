@@ -1,10 +1,10 @@
-pub mod player;
-pub mod spawn;
-pub mod wall;
-pub mod goat;
-pub mod utils;
-pub mod health;
 pub mod fignya;
 pub mod friendly;
-pub mod missile;
+pub mod goat;
+pub mod health;
 pub mod level_params;
+pub mod missile;
+pub mod player;
+pub mod spawn;
+pub mod utils;
+pub mod wall;

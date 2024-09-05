@@ -3,8 +3,6 @@ use bevy_spritesheet_animation::library::SpritesheetLibrary;
 use bevy_spritesheet_animation::prelude::{AnimationRepeat, Spritesheet};
 
 pub fn spawn_animations(mut library: ResMut<SpritesheetLibrary>) {
-
-
     // Create different animations
 
     // Idle
@@ -32,7 +30,6 @@ pub fn spawn_animations(mut library: ResMut<SpritesheetLibrary>) {
 
     library.name_animation(run_anim_id, "run_right").unwrap();
 
-
     // Run Left
 
     let run_clip_id = library.new_clip(|clip| {
@@ -47,4 +44,3 @@ pub fn spawn_animations(mut library: ResMut<SpritesheetLibrary>) {
 
     library.name_animation(run_anim_id, "run_left").unwrap();
 }
-

@@ -1,6 +1,6 @@
-use bevy::prelude::{ Component};
+use bevy::prelude::Component;
 
-#[derive(Default,Component)]
+#[derive(Default, Component)]
 pub struct Health {
     pub current: f32,
     pub max: f32,

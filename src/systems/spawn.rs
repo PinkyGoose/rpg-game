@@ -1,11 +1,14 @@
 use bevy::math::{IVec2, UVec2};
-use bevy::prelude::{Component, DespawnRecursiveExt, GlobalTransform, Resource};
-use bevy::prelude::{Changed, Commands, default, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas, TextureAtlasLayout, Transform, With};
 use bevy::prelude::Vec3;
+use bevy::prelude::{
+    default, Changed, Commands, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas,
+    TextureAtlasLayout, Transform, With,
+};
+use bevy::prelude::{Component, DespawnRecursiveExt, GlobalTransform, Resource};
 use bevy::utils::{HashMap, HashSet};
-use bevy_asset::{Assets, AssetServer};
-use bevy_ecs_ldtk::{GridCoords, LevelIid, LevelSelection};
+use bevy_asset::{AssetServer, Assets};
 use bevy_ecs_ldtk::utils::translation_to_grid_coords;
+use bevy_ecs_ldtk::{GridCoords, LevelIid, LevelSelection};
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
 use num::range_inclusive;
@@ -49,7 +52,8 @@ pub fn process_player(
     commands.spawn((
         SpriteBundle {
             texture,
-            transform: Transform::from_xyz(player_spawn.x, player_spawn.y, 3.0).with_scale(Vec3::new(0.5,0.5,0.5)), // Используем координаты из ресурса
+            transform: Transform::from_xyz(player_spawn.x, player_spawn.y, 3.0)
+                .with_scale(Vec3::new(0.5, 0.5, 0.5)), // Используем координаты из ресурса
 
             ..default()
         },
@@ -58,9 +62,7 @@ pub fn process_player(
             ..default()
         },
         SpritesheetAnimation::from_id(library.animation_with_name("archer_idle").unwrap()),
-        PlayerBundle {
-            ..default()
-        },
+        PlayerBundle { ..default() },
         Health {
             current: 34.0, // Изначальное значение здоровья
             max: 100.0,
@@ -68,8 +70,6 @@ pub fn process_player(
         Regeneration(8.0),
     ));
 }
-
-
 
 #[derive(Default, Debug, Resource)]
 pub struct MyLevelNeighbors {
@@ -104,66 +104,76 @@ pub fn cache_neighbor_levels(
             }
         }
         id
-    }else { return; };
+    } else {
+        return;
+    };
 
-
-
-        let current_level_size = if let Some(some) = level_sizes.sizes.get(current_level) {
-            some
-        } else { return; };
+    let current_level_size = if let Some(some) = level_sizes.sizes.get(current_level) {
+        some
+    } else {
+        return;
+    };
     let current_level_pos = if let Some(some) = level_coords.sizes.get(current_level) {
         some
-    } else { return; };
+    } else {
+        return;
+    };
 
     let mut neighbor_grid_map = HashMap::new();
 
-    let current_level_left_bottom = current_level_pos.grid_coords-GridCoords::new(1,1);
-    let current_level_right_top = current_level_pos.grid_coords+ GridCoords::from(current_level_size.grid_size);
+    let current_level_left_bottom = current_level_pos.grid_coords - GridCoords::new(1, 1);
+    let current_level_right_top =
+        current_level_pos.grid_coords + GridCoords::from(current_level_size.grid_size);
     // info!("current_level_left_bottom {:?} {:?}",current_level, current_level_left_bottom);
     // info!("current_level_right_top {:?}", current_level_right_top);
     let mut hash_set_current_level = HashSet::new();
-    for i in range_inclusive(current_level_left_bottom.x,current_level_right_top.x){
+    for i in range_inclusive(current_level_left_bottom.x, current_level_right_top.x) {
         hash_set_current_level.insert(GridCoords::new(i, current_level_right_top.y));
         hash_set_current_level.insert(GridCoords::new(i, current_level_left_bottom.y));
     }
-    for i in range_inclusive(current_level_left_bottom.y,current_level_right_top.y){
+    for i in range_inclusive(current_level_left_bottom.y, current_level_right_top.y) {
         hash_set_current_level.insert(GridCoords::new(current_level_right_top.x, i));
-        hash_set_current_level.insert(GridCoords::new(current_level_left_bottom.x,i));
+        hash_set_current_level.insert(GridCoords::new(current_level_left_bottom.x, i));
     }
     // info!("for current_level exits {:?} {:?}",hash_set_current_level.clone().into_iter().count(), hash_set_current_level);
 
-    for level_neighbor in vec_neighbors{
+    for level_neighbor in vec_neighbors {
         let level_neighbor_size = if let Some(some) = level_sizes.sizes.get(level_neighbor) {
             some
-        } else { return; };
+        } else {
+            return;
+        };
         let level_neighbor_pos = if let Some(some) = level_coords.sizes.get(level_neighbor) {
             some
-        } else { return; };
+        } else {
+            return;
+        };
         let level_neighbor_left_bottom = level_neighbor_pos.grid_coords;
-        let level_neighbor_right_top = level_neighbor_pos.grid_coords+ GridCoords::from(level_neighbor_size.grid_size)-GridCoords::new(1,1);
+        let level_neighbor_right_top = level_neighbor_pos.grid_coords
+            + GridCoords::from(level_neighbor_size.grid_size)
+            - GridCoords::new(1, 1);
         // info!("level_neighbor_left_bottom {:?} {:?}",level_neighbor, level_neighbor_left_bottom);
         // info!("level_neighbor_right_top {:?}", level_neighbor_right_top);
         let mut hash_set_level_neighbor = HashSet::new();
-        for i in range_inclusive(level_neighbor_left_bottom.x,level_neighbor_right_top.x){
+        for i in range_inclusive(level_neighbor_left_bottom.x, level_neighbor_right_top.x) {
             hash_set_level_neighbor.insert(GridCoords::new(i, level_neighbor_right_top.y));
             hash_set_level_neighbor.insert(GridCoords::new(i, level_neighbor_left_bottom.y));
             // info!("Идем по иксу {:?} {:?} {:?}",i,level_neighbor_right_top.y,level_neighbor_left_bottom.y)
         }
-        for i in range_inclusive(level_neighbor_left_bottom.y,level_neighbor_right_top.y){
+        for i in range_inclusive(level_neighbor_left_bottom.y, level_neighbor_right_top.y) {
             hash_set_level_neighbor.insert(GridCoords::new(level_neighbor_right_top.x, i));
-            hash_set_level_neighbor.insert(GridCoords::new(level_neighbor_left_bottom.x,i));
+            hash_set_level_neighbor.insert(GridCoords::new(level_neighbor_left_bottom.x, i));
         }
         for neighbor_grid in &hash_set_level_neighbor {
-                        if let Some(a) = hash_set_current_level.take(neighbor_grid) {
-                            neighbor_grid_map.insert(a, level_neighbor.clone());
-                        }
-                    }
+            if let Some(a) = hash_set_current_level.take(neighbor_grid) {
+                neighbor_grid_map.insert(a, level_neighbor.clone());
+            }
+        }
         // info!("for level_neighbor exits {:?} {:?}",hash_set_level_neighbor.clone().into_iter().count(), hash_set_level_neighbor);
     }
 
     my_level_neighbors.jija = neighbor_grid_map;
 }
-
 
 pub fn check_player_on_entry(
     mut level_selection: ResMut<LevelSelection>,
@@ -171,7 +181,10 @@ pub fn check_player_on_entry(
     coords_exits: Res<MyLevelNeighbors>,
 ) {
     if let Ok(player) = players.get_single() {
-        if let Some(a) = coords_exits.jija.get(&translation_to_grid_coords(player.translation().truncate(), IVec2::new(GRID_SIZE, GRID_SIZE))) {
+        if let Some(a) = coords_exits.jija.get(&translation_to_grid_coords(
+            player.translation().truncate(),
+            IVec2::new(GRID_SIZE, GRID_SIZE),
+        )) {
             // info!("level to move {:?}", a);
             *level_selection = LevelSelection::iid(a.clone())
         }
