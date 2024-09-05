@@ -5,12 +5,9 @@ use bevy::{
     prelude::{ KeyCode, Query, Res, Time, Transform, Vec2, With, Without},
 };
 use bevy::log::warn;
-use bevy::math::IVec2;
 use bevy::prelude::{Changed, GlobalTransform};
-use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
-use log::info;
 use rand::Rng;
 
 use crate::{
@@ -18,14 +15,13 @@ use crate::{
     entities::player::Player,
     entities::wall::LevelWalls,
 };
-use crate::constants::GRID_SIZE;
 use crate::entities::friendly::Friendly;
 use crate::entities::utils::{Character, MovementSpeed};
 use crate::entities::utils::NextUpdate;
 use crate::entities::utils::VisiblyDistance;
 
 pub fn move_player_from_input(
-    mut players: Query<(&mut MovementSpeed,&GlobalTransform, &Transform, &mut SpritesheetAnimation), With<Player>>,
+    mut players: Query<(&mut MovementSpeed, &mut SpritesheetAnimation), With<Player>>,
     input: Res<ButtonInput<KeyCode>>,
     library: Res<SpritesheetLibrary>,
 ) {
@@ -43,33 +39,25 @@ pub fn move_player_from_input(
         movement_direction += Vec2::new(1., 0.);
     }
 
-    for (mut speed,a,b, mut animation) in players.iter_mut() {
-        // info!("speed {:?}", speed);
-        // info!("animeee {:?}", animee);
-
-        // info!("character pos {:?}", translation_to_grid_coords(a.translation().truncate(), IVec2::new(GRID_SIZE,GRID_SIZE)));
+    for (mut speed, mut animation) in players.iter_mut() {
         if movement_direction.x < 0. {
             if let Some(id) = library.animation_with_name("run_left") {
                 animation.animation_id = id;
 
-                // info!("left");
             }
         } else if movement_direction.x > 0. {
             if let Some(id) = library.animation_with_name("run_right") {
                 animation.animation_id = id;
-                // info!("right");
             }
         } else {
             if let Some(id) = library.animation_with_name("archer_idle") {
                 animation.animation_id = id;
-                // info!("idle");
             }
         }
 
         speed.0 = if movement_direction == Vec2::new(-0., 0.) {
             movement_direction
         } else {
-            info!("character pos {:?}", translation_to_grid_coords(b.translation.truncate(), IVec2::new(GRID_SIZE,GRID_SIZE)));
             movement_direction.normalize() * PLAYER_SPEED
         };
     }

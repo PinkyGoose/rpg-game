@@ -1,25 +1,23 @@
 use std::collections::HashSet;
-use bevy::hierarchy::Parent;
 use bevy::log::info;
 use crate::constants::GRID_SIZE;
 use crate::entities::wall::{LevelWalls, Wall};
 use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 
-use bevy::math::{IVec2, Vec2};
-use bevy::prelude::{Changed, Commands, Entity, GlobalTransform, Query, ResMut, Transform, With, Without};
-use bevy_ecs_ldtk::{GridCoords, LayerMetadata};
-use crate::entities::level_params::LevelCoord;
+use bevy::math::IVec2;
+use bevy::prelude::{Changed, GlobalTransform, Query, ResMut,With};
+use bevy_ecs_ldtk::GridCoords;
 
 pub fn cache_wall_locations(
     mut level_walls: ResMut<LevelWalls>,
-    mut query: Query<(&GlobalTransform, &Parent, Entity), (With<Wall>, Changed<GlobalTransform>)>,
+    mut query: Query<&GlobalTransform, (With<Wall>, Changed<GlobalTransform>)>,
 ) {
     let mut new_level_walls = HashSet::new();
     let vec_grid_size = IVec2::new(GRID_SIZE,GRID_SIZE);
 
-            for (global_transform, parent, wall_entity) in query.iter_mut() {
+            for global_transform in query.iter_mut() {
 
-                let mut translation = global_transform.translation().truncate();
+                let translation = global_transform.translation().truncate();
                 info!("translation {:?}", translation);
                 let mut grid_coords = translation_to_grid_coords(translation, vec_grid_size);//;-GridCoords::new(1,1);
                 if grid_coords.x > 0{

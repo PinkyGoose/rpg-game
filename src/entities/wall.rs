@@ -13,8 +13,6 @@ pub struct Wall;
 pub struct WallBundle {
     wall: Wall,
 }
-#[derive(Component, Debug)]
-pub struct Walls;
 #[derive(Default, Resource)]
 pub struct LevelWalls {
     pub wall_locations: HashSet<GridCoords>,

@@ -15,10 +15,12 @@ pub struct LevelCoords {
 #[derive(Default, Debug)]
 pub struct LevelSize {
     pub grid_size: IVec2,
+    #[allow(dead_code)]
     pub pix_size: IVec2,
 }
 #[derive(Default, Debug)]
 pub struct LevelCoord {
     pub grid_coords: GridCoords,
+    #[allow(dead_code)]
     pub pix_coords: Vec2,
 }

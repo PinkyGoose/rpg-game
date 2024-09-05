@@ -1,19 +1,18 @@
-use crate::entities::level_params::LevelSizes;
-use crate::entities::level_params::LevelCoords;
-use bevy::prelude::{Commands, EventReader, GlobalTransform, Query, Res, ResMut, Resource, Transform};
-use bevy::utils::HashMap;
+use bevy::math::IVec2;
+use bevy::prelude::{Commands, EventReader, GlobalTransform, Query, Res, ResMut};
 use bevy_asset::{Assets, Handle};
-use bevy_ecs_ldtk::{GridCoords, LevelEvent, LevelIid};
+use bevy_ecs_ldtk::{LevelEvent, LevelIid};
 use bevy_ecs_ldtk::assets::LdtkProject;
 use bevy_ecs_ldtk::assets::LevelMetadataAccessor;
+use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 
 use crate::constants::GRID_SIZE;
-use crate::systems::spawn::NeedToCacheNeighbors;
-use bevy::math::IVec2;
-use bevy::prelude::Vec2;
-use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 use crate::entities::level_params::LevelCoord;
+use crate::entities::level_params::LevelCoords;
 use crate::entities::level_params::LevelSize;
+use crate::entities::level_params::LevelSizes;
+use crate::systems::spawn::NeedToCacheNeighbors;
+
 pub fn cache_level_params(
     mut commands: Commands,
     mut level_events: EventReader<LevelEvent>,
@@ -31,7 +30,7 @@ pub fn cache_level_params(
             let level = ldtk_project
                 .get_raw_level_by_iid(level_iid.get())
                 .expect("spawned level should exist in project");
-            for ((transform,id)) in levels.iter(){
+            for (transform,id) in levels.iter(){
                 if id==level_iid{
                     let translation = transform.translation().truncate();
                     level_coords.sizes.insert(level_iid.clone(), LevelCoord{

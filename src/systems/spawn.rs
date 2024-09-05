@@ -1,23 +1,20 @@
-
-use crate::entities::level_params::LevelCoords;
-use crate::entities::level_params::LevelSizes;
-use bevy::hierarchy::{BuildChildren, Children};
-use bevy::math::{IVec2, UVec2, Vec2};
-use bevy::prelude::{BuildChildrenTransformExt, Component, DespawnRecursiveExt, GlobalTransform, info, Resource};
-use bevy::prelude::{Added, Changed, Commands, default, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas, TextureAtlasLayout, Transform, With};
+use bevy::math::{IVec2, UVec2};
+use bevy::prelude::{Component, DespawnRecursiveExt, GlobalTransform, Resource};
+use bevy::prelude::{Changed, Commands, default, Entity, Query, Res, ResMut, SpriteBundle, TextureAtlas, TextureAtlasLayout, Transform, With};
+use bevy::prelude::Vec3;
 use bevy::utils::{HashMap, HashSet};
 use bevy_asset::{Assets, AssetServer};
-use bevy_ecs_ldtk::{EntityInstance, GridCoords, LevelIid, LevelSelection};
+use bevy_ecs_ldtk::{GridCoords, LevelIid, LevelSelection};
 use bevy_ecs_ldtk::utils::translation_to_grid_coords;
 use bevy_spritesheet_animation::component::SpritesheetAnimation;
 use bevy_spritesheet_animation::library::SpritesheetLibrary;
-use num::{range, range_inclusive};
+use num::range_inclusive;
 
 use crate::entities::health::{Health, Regeneration};
+use crate::entities::level_params::LevelCoords;
+use crate::entities::level_params::LevelSizes;
 use crate::entities::player::{Player, PlayerBundle};
 use crate::GRID_SIZE;
-use bevy::prelude::Vec3;
-
 
 #[derive(Resource)]
 pub struct PlayerSpawnPosition {
@@ -86,7 +83,7 @@ pub fn cache_neighbor_levels(
     mut commands: Commands,
     need_to_cache_neighbors: Query<Entity, With<NeedToCacheNeighbors>>,
     level_selection: Res<LevelSelection>,
-    levels: Query<(&LevelIid), With<LevelIid>>,
+    levels: Query<&LevelIid, With<LevelIid>>,
     mut my_level_neighbors: ResMut<MyLevelNeighbors>,
     level_sizes: Res<LevelSizes>,
     level_coords: Res<LevelCoords>,
