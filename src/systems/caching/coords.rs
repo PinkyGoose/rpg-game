@@ -1,7 +1,7 @@
+use crate::constants::GRID_SIZE;
 use bevy::math::IVec2;
 use bevy::prelude::{Changed, Query, Transform};
 use bevy_ecs_ldtk::GridCoords;
-use crate::constants::GRID_SIZE;
 
 pub fn translate_grid_coords_entities(
     mut grid_coords_entities: Query<(&mut Transform, &GridCoords), Changed<GridCoords>>,

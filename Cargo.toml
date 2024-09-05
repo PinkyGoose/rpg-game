@@ -1,13 +1,18 @@
 [package]
 name = "rpg-game"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[profile.dev]
+opt-level = 1
+[profile.dev.package."*"]
+opt-level = 3
+
 [dependencies]
 
-bevy = { version = "0.14.1" ,features = ["bevy_winit", "bevy_render", "bevy_gltf", "bevy_audio"]}
+bevy = { version = "0.14.1" ,features = ["bevy_winit", "bevy_render", "bevy_gltf", "bevy_audio", "dynamic_linking"]}
 bevy_editor_pls = "0.9.0"
 bevy_editor_pls_core = "0.9.0"
 bevy_ecs_ldtk = { version = "0.10.0", features = ["bevy_ecs_ldtk_macros","atlas","derive"]}

@@ -1,6 +1,5 @@
-
-use crate::entities::utils::MovementSpeed;
 use crate::entities::utils::Character;
+use crate::entities::utils::MovementSpeed;
 use bevy::prelude::{Bundle, Component};
 use bevy_ecs_ldtk_macros::LdtkEntity;
 #[derive(Default, Component)]
@@ -13,4 +12,3 @@ pub struct PlayerBundle {
     pub character: Character,
     pub movement_speed: MovementSpeed,
 }
-

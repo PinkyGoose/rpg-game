@@ -4,8 +4,6 @@ use bevy::prelude::{GlobalTransform, Query, ResMut, Window, With};
 use bevy::window::PrimaryWindow;
 use bevy_render::prelude::Camera;
 
-
-
 pub fn my_cursor_system(
     mut mycoords: ResMut<MyWorldCoords>,
     q_window: Query<&Window, With<PrimaryWindow>>,
@@ -13,7 +11,8 @@ pub fn my_cursor_system(
 ) {
     let (camera, camera_transform) = q_camera.single();
     let window = q_window.single();
-    if let Some(world_position) = window.cursor_position()
+    if let Some(world_position) = window
+        .cursor_position()
         .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
         .map(|ray| ray.origin.truncate())
     {

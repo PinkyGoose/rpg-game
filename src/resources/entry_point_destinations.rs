@@ -1,10 +1,10 @@
 use crate::GRID_SIZE;
-use bevy::prelude::{Reflect, ReflectResource, Resource};
 use bevy::math::{IVec2, Vec2};
+use bevy::prelude::{Reflect, ReflectResource, Resource};
 use bevy::utils::HashMap;
 use bevy_ecs_ldtk::{EntityIid, GridCoords, LevelIid};
-use bevy_inspector_egui::InspectorOptions;
 use bevy_inspector_egui::prelude::ReflectInspectorOptions;
+use bevy_inspector_egui::InspectorOptions;
 #[derive(Default, Reflect)]
 pub struct Destination {
     pub level: LevelIid,
