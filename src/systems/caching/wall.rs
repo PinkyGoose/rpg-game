@@ -11,7 +11,8 @@ use bevy_ecs_ldtk::GridCoords;
 pub fn cache_wall_locations(
     mut level_walls: ResMut<LevelWalls>,
     mut query: Query<&GlobalTransform, (With<Wall>, Changed<GlobalTransform>)>,
-) {
+){
+//TODO система для очистки level_walls
     let mut new_level_walls = HashSet::new();
     let vec_grid_size = IVec2::new(GRID_SIZE, GRID_SIZE);
 
@@ -26,9 +27,14 @@ pub fn cache_wall_locations(
             grid_coords -= GridCoords::new(0, 1);
         }
         new_level_walls.insert(grid_coords);
+        info!("new_level_walls {:?}", new_level_walls);
     }
     if new_level_walls.is_empty() {
         return;
     }
-    level_walls.wall_locations = new_level_walls;
+    for i in new_level_walls{
+        if i!=GridCoords::new(0,0) {
+            level_walls.wall_locations.insert(i);
+        }
+    }
 }

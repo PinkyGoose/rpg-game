@@ -1,6 +1,6 @@
 [package]
 name = "rpg-game"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -33,3 +33,4 @@ clap = { version = "4.5.16", features = ["derive"] }
 url = "2.5.0"
 uuid = { version = "1.8.0", features = ["v4"] }
 num = "0.4.3"
+bincode = "2.0.0-rc.3"
