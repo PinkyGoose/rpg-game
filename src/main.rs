@@ -1,68 +1,28 @@
 //! Renders a 2D scene containing a single, moving sprite.
 
-use crate::entities::level_params::LevelCoords;
-use crate::entities::level_params::LevelSizes;
 use crate::plugins::attack::AttackPlugin;
 use crate::plugins::movement::MovementPlugin;
 use crate::states::MyAppState;
-use crate::systems::caching::level_params::cache_level_params;
 use bevy::log::LogPlugin;
 use bevy::prelude::GlobalTransform;
-use bevy::prelude::IntoSystemConfigs;
 use bevy::prelude::{default, AppExtStates};
 use bevy::prelude::{Component, Query, Transform, With, Without};
 use bevy::{
-    prelude::{App, Camera2dBundle, Commands, PluginGroup, Res, Startup, Update},
+    prelude::{App, Camera2dBundle, Commands, PluginGroup, Res},
     DefaultPlugins,
 };
 use bevy_asset::AssetServer;
-use bevy_ecs_ldtk::LdtkSettings;
-use bevy_ecs_ldtk::LevelSpawnBehavior;
-use bevy_ecs_ldtk::{
-    app::{LdtkEntityAppExt, LdtkIntCellAppExt},
-    LdtkWorldBundle, LevelSelection,
-};
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use bevy_ecs_ldtk::LdtkWorldBundle;
 use bevy_render::prelude::ImagePlugin;
-use bevy_spritesheet_animation::plugin::SpritesheetAnimationPlugin;
-use bincode::{config, Decode, Encode};
 use clap::Parser;
-use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
+use iyes_perf_ui::entries::PerfUiBundle;
 
-use entities::goat::GoatBundle;
 
-use crate::entities::fignya::FignyaBundle;
 use crate::entities::friendly::Friendly;
 use crate::entities::player::Player;
-use crate::entities::utils::VisiblyDistance;
-use crate::entities::wall::LevelWalls;
 use crate::plugins::development::DevelopmentPlugin;
 use crate::plugins::game::GamePlugin;
-use crate::resources::cursor_position::MyWorldCoords;
-use crate::resources::entry_point_destinations::LevelEntryPoints;
-use crate::resources::spawn_point::SpawnPointId;
-use crate::systems::actions::attack::check_killed;
-use crate::systems::actions::attack::check_killed_player;
-use crate::systems::actions::attack::move_missiles;
-use crate::systems::actions::attack::{attack_player_from_input, randomize_attacks};
-use crate::systems::animation::spawn_animations;
-use crate::systems::caching::attack::insert_enemy_attack_time;
-use crate::systems::caching::coords::translate_grid_coords_entities;
-use crate::systems::caching::cursor::my_cursor_system;
-use crate::systems::caching::friendly::calculate_friendly;
-use crate::systems::caching::movement::move_all;
-use crate::systems::caching::movement::move_player_from_input;
-use crate::systems::caching::movement::randomize_movements;
-use crate::systems::caching::visible_distanse::calculate_visible;
-use crate::systems::caching::wall::cache_wall_locations;
-use crate::systems::health::calculate_health;
-use crate::systems::health::spawn_health_bars;
-use crate::systems::health::{regen_health, update_health_bars};
-use crate::systems::spawn::check_player_on_entry;
-use crate::systems::spawn::process_player;
-use crate::systems::spawn::MyLevelNeighbors;
-use crate::systems::spawn::{cache_neighbor_levels, PlayerSpawnPosition};
-use crate::{constants::GRID_SIZE, entities::wall::WallBundle};
+use crate::constants::GRID_SIZE;
 mod cli;
 mod constants;
 mod entities;

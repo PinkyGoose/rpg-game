@@ -49,10 +49,8 @@ pub fn move_player_from_input(
             if let Some(id) = library.animation_with_name("run_right") {
                 animation.animation_id = id;
             }
-        } else {
-            if let Some(id) = library.animation_with_name("archer_idle") {
-                animation.animation_id = id;
-            }
+        } else if let Some(id) = library.animation_with_name("archer_idle") {
+            animation.animation_id = id;
         }
 
         speed.0 = if movement_direction == Vec2::new(-0., 0.) {
@@ -133,7 +131,7 @@ pub fn move_all(
     level_walls: Res<LevelWalls>,
 ) {
     for (mut coords, coords_global, speed) in characters.iter_mut() {
-        let mut speed = speed.0;
+        let speed = speed.0;
         let dest_global = coords_global.translation().truncate() + speed * time.delta_seconds();
         let direction_x = if speed.x == 0. {
             DirectionX::None

@@ -1,5 +1,4 @@
 use crate::GRID_SIZE;
-use bevy::log::debug;
 use bevy::prelude::Bundle;
 use bevy::prelude::Component;
 use bevy::prelude::Resource;
@@ -91,7 +90,6 @@ impl LevelWalls {
     }
     pub fn in_wall_horizontal_with_size(&self, coords: &Vec2, size: i32) -> bool {
         let half_size = (size / 2 - 2) as f32;
-        let minus_half_size = -1. * half_size;
         let coords = *coords;
         let player_grid = translation_to_grid_coords(
             coords + Vec2::new(0., half_size),
@@ -108,9 +106,7 @@ impl LevelWalls {
         )
     }
     pub fn in_wall_vertical_with_size(&self, coords: &Vec2, size: i32) -> bool {
-        // return false;
         let half_size = (size / 2 - 2) as f32;
-        let minus_half_size = -1. * half_size;
         let coords = *coords;
         let player_grid = translation_to_grid_coords(
             coords + Vec2::new(half_size, 0.),
