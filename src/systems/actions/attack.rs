@@ -75,10 +75,8 @@ pub fn attack_player_from_input(
         info!("jiojioj {:?} {:?}", jija, jojo);
         let missile_bundle = MissileBundle {
             missile: Missile,
-            movement_speed: MovementSpeed {
-                0: -vec_between_cursor.normalize() * MISSILE_SPEED,
-            },
-            damage: Damage { 0: 10. },
+            movement_speed: MovementSpeed(-vec_between_cursor.normalize() * MISSILE_SPEED),
+            damage: Damage(10.),
             // global_transform: GlobalTransform::from(player_translation.extend(2.))
             transform: Transform::from_xyz(player_translation.x, player_translation.y, z)
                 .looking_to(Vec3::ZERO, vec_between_cursor.extend(0.)),
@@ -119,16 +117,13 @@ pub fn randomize_attacks(
             && translation.distance(player_translation) < visible.0
             && time_attack.time < time_elapsed
         {
-            match friendly {
-                Friendly::Enemy => {
-                    // let speed_calculated = player_translation - translation;
-                    health.current = health.current - 15.; //TODO заменить на урон существа
+            if let Friendly::Enemy = friendly {
+                // let speed_calculated = player_translation - translation;
+                health.current -= 15.; //TODO заменить на урон существа
 
-                    time_attack.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5)); //TODO заменить на время атаки
+                time_attack.time = time_elapsed + Duration::from_secs(rng.gen_range(1..5)); //TODO заменить на время атаки
 
-                    continue;
-                }
-                _ => {}
+                continue;
             }
         }
     }
