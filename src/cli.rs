@@ -8,5 +8,5 @@ pub struct Args {
     pub dev_tools: bool,
 
     #[clap(long, default_value = "info")]
-    pub log_level: String
+    pub log_level: String,
 }
